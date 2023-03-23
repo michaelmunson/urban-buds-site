@@ -1,0 +1,67 @@
+{
+    "products" : [
+        {
+            "img":"https://upload.wikimedia.org/wikipedia/commons/2/23/Marijuana-Cannabis-Weed-Bud-Gram.jpg",
+            "title":"Premium #1",
+            "type":"Sativa",
+            "price":19.99,
+            "description" : "A sweet, savory bud that is sure to get you stony balogne!"
+        },
+        {
+            "img":"https://www.growweedeasy.com/wp-content/uploads/2016/11/pretty-cannabis-bud-nug.jpg",
+            "title":"Premium #2",
+            "type":"Sativa",
+            "price":19.99,
+            "description" : "A sweet, savory bud that is sure to get you stony balogne!"
+        },
+        {
+            "img":"https://media.istockphoto.com/id/512120790/photo/marijuana-buds-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=h098YNqxSNSQt6QP2AOtmeq_afXl2nbO1mrOB_HZodk=",
+            "title":"Premium #3",
+            "type":"Indica",
+            "price":19.99,
+            "description" : "A sweet, savory bud that is sure to get you stony balogne!"
+        },
+        {
+            "img":"http://atlas-content-cdn.pixelsquid.com/stock-images/cannabis-bud-marijuana-doxJON3-600.jpg",
+            "title":"Premium #4",
+            "type":"Sativa",
+            "price":19.99,
+            "description" : "A sweet, savory bud that is sure to get you stony balogne!"
+        },
+        {
+            "img":"https://images.squarespace-cdn.com/content/v1/59c2d4dd03596e451487edc6/1605308050879-0DLWUQV8XZW0F0TAY8OX/Small-Flower-Image.jpg?format=1500w",
+            "title":"Premium #5",
+            "type":"Sativa",
+            "price":19.99,
+            "description" : "A sweet, savory bud that is sure to get you stony balogne!"
+        },
+        {
+            "img":"https://images.unsplash.com/photo-1603909223429-69bb7101f420?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Y2FubmFiaXMlMjBidWR8ZW58MHx8MHx8&w=1000&q=80",
+            "title":"Premium #6",
+            "type":"Indica",
+            "price":19.99,
+            "description" : "A sweet, savory bud that is sure to get you stony balogne!"
+        },
+        {
+            "img":"http://atlas-content-cdn.pixelsquid.com/stock-images/marijuana-buds-y1JNQWA-600.jpg",
+            "title":"Premium #7",
+            "type":"Sativa",
+            "price":19.99,
+            "description" : "A sweet, savory bud that is sure to get you stony balogne!"
+        },
+        {
+            "img":"https://p.turbosquid.com/ts-thumb/4O/1mLJCX/X7KIkHCK/weed6_r1/jpg/1494358050/600x600/fit_q87/f9b9682f5b7c7d174d304744bf0d7e474fbfc726/weed6_r1.jpg",
+            "title":"Premium #8",
+            "type":"Hybrid",
+            "price":19.99,
+            "description" : "A sweet, savory bud that is sure to get you stony balogne!"
+        },
+        {
+            "img":"https://t3.ftcdn.net/jpg/00/69/61/42/360_F_69614247_ytVeKt3WmrvsDKjZ46CJBlTdVl9pmUAb.jpg",
+            "title":"Premium #9",
+            "type":"Sativa",
+            "price":19.99,
+            "description" : "A sweet, savory bud that is sure to get you stony balogne!"
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+.form-container {
+    background-image: url("../images/curvyLines.png");
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    height: 90vh;
+    width: 100%;
+}
+
+input, textarea {
+    background-color: white !important;
+}
+
+.form {
+    /* padding:20px; */
+    min-width: 395px;
+}
+
+.form-header {
+    font-family: 'Farsan', cursive;
+    margin-top:60px;
+}
+
+.name-input-div {
+    display: flex;
+    justify-content: space-around;
+    margin:20px 0px;
+}
+

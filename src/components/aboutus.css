@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+
+.about-us-container {
+    background-image: url("../images/curvyLines.png");
+    background-size: cover;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.about-us-header {
+    font-family: 'Farsan', cursive;
+    margin-top:60px;
+}
+
+.about-us-text {
+    width:75%;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.5rem;
+}

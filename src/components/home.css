@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Farsan&display=swap');
+
+/* SECTION 1 */
+
+.landing-page-section-1 {
+    background-image: url("../images/urban_landscape_0.jpeg");
+    background-size: cover;
+    height:75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.landing-page-section-1-button-div {
+    width: 100%;
+    text-align: center;
+    margin-top:2rem
+}
+
+.main-header {
+    text-align: center;
+    margin-bottom:5rem;
+    font-size: 4rem;
+    font-family: 'Farsan', cursive;
+}
+
+/* SECTION 2 */
+
+.landing-page-section-2 {
+    background-image: url("../images/curvyLines.png");
+    background-size: cover;
+    height:75vh;
+    max-height: 500px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.basic-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+    text-align: center;
+}
+
+/* SECTION 3 */
+
+.landing-page-section-3 {
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    align-items: center;
+    background-image: url("../images/curvyLines.png");
+    background-size: cover;
+}
+
+.weed-image-list-item {
+    transition: 300ms ease-in-out;
+    border: 1px solid gray;
+    border-radius: 20px;
+}
+
+.weed-image-list-item:hover {
+    transform: scale(.9);
+    
+}
+
+.weed-image {
+    border-radius: 20px;
+}
+
+.weed-image-list-item-bar {
+    border-radius: 0px 0px 19px 19px;
+}
+
+/* SECTION 4 */
+
+.landing-page-section-4 {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-image: url("../images/curvyLines.png");
+    background-size: cover;
+    height:50vh;
+}
+
+.questions-button {
+    font-size: 4rem;
+    color: #028100;
+    background:white;
+    border-radius: 20px;
+    font-family: 'Farsan', cursive;
+    padding:10px 20px;
+    padding-bottom: 0px;
+    box-shadow: 2px 2px 5px gray;
+    transition: 200ms ease-out;
+    margin-top: 30px;
+}
+
+.questions-button:hover {
+    
+    transform: scale(1.05);
+    box-shadow: 7px 7px 5px gray;
+}
+
+/* FOOTER */
+
+.landing-page-footer {
+    background-color: black;
+
+}
+
+.landing-page-footer-text {
+    color:lightgray;
+}

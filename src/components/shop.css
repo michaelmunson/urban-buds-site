@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Farsan&display=swap');
+
+/* HEADER SECTION */
+
+.shop-container {
+    background-image: url("../images/curvyLines.png");
+    background-size: cover;
+}
+
+.header-section {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 30px;
+}
+
+.header-section-header-div {
+    width:100%;
+}
+
+.header-section-header {
+    font-family: 'Farsan', cursive;
+    font-size: 2rem;
+    /* padding:10px;
+    padding-bottom: 0px; */
+}
+
+.header-section-search {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width:100%;
+}
+
+/* SHOP SECTION */
+
+.product-section {
+    /* display:flex;
+    flex-direction: row;
+    justify-content: space-around; */
+}
+
+.product-grid {
+    display: grid;
+    /* grid-template-rows: auto auto auto ; */
+    grid-template-columns: auto auto auto;
+    gap: 30px 10px;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.product-card-image {
+    height:200px;
+    margin:10px;
+    transition:200ms ease;
+}
+
+.product-card-image:hover {
+    transform:scale(1.1)
+}
+
+.product-card-title {
+    margin:0px;
+}
+
+.product-card-price {
+    margin:5px;
+    color:gray;
+}
+
+/* MODAL SECTION */
+
+.modal-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-title {
+    margin:0px;
+}
+
+.modal-image {
+    height:200px;
+    margin:10px;
+}
+
+.modal-price {
+    font-size: 1.5rem;
+}
