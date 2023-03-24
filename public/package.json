@@ -1,0 +1,17 @@
+{
+  "name": "urban-buds-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.mjs",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build" : "echo \"IN SERVER DIR...\n\"",
+    "start": "node server.mjs"
+  },
+  "author": "Michael Munson",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

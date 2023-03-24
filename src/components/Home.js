@@ -1,4 +1,4 @@
-import { Button, Grid,TextField } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import NavBar from './NavBar';
@@ -15,6 +15,25 @@ const imageData = data.products;
 
 export default function Home() {
 	const navigate = useNavigate(); 
+
+	// function getUsers(){
+	// 	fetch("/api/users",{
+	// 		method: 'POST',
+	// 		body: JSON.stringify({
+	// 			"test":"test",
+	// 		}),
+	// 		headers: {
+	// 		  'Content-type': 'application/json; charset=UTF-8',
+	// 		}
+	// 	})
+	// 	.then(async res => {
+	// 		const result = await res.json();
+	// 		console.log(result)
+	// 	})
+	// 	.catch(err=>console.log(err));
+	// }
+
+	// getUsers();
 
 	return (
 		<>

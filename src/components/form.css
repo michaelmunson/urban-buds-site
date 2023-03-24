@@ -29,3 +29,7 @@ input, textarea {
     margin:20px 0px;
 }
 
+.error-message {
+    color: red;
+    
+}

@@ -17,13 +17,44 @@ export default function SignUp() {
 	const [isPasswordValid, setIsPasswordValid] = useState(true);
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(true);
+	const [errorMessage, setErrorMessage] = useState("");
 
-	const handleSubmit = () => {
+	const validateValues = () => {
 		setIsFirstNameValid(validate("name", firstName));
 		setIsLastNameValid(validate("name", lastName));
 		setIsEmailValid(validate("email", email));
 		setIsPasswordValid(validate("password", password));
 		setIsConfirmPasswordValid(password === confirmPassword && confirmPassword.length > 0);
+	}
+
+	const createAccount = () => {
+		fetch("/api/signup",{
+			method: 'POST',
+			body: JSON.stringify({
+				firstName,
+				lastName,
+				email,
+				password
+			}),
+			headers: {
+			  'Content-type': 'application/json; charset=UTF-8',
+			}
+		})
+		.then(async res => {
+			const result = await res.json();
+			console.log(result)
+		})
+		.catch(err=>console.log(err));
+	}
+
+	const handleSubmit = () => {
+		validateValues();
+		if (validate("name", firstName) && validate("name", lastName) && validate("email", email) && validate("password", password) && (password === confirmPassword && confirmPassword.length > 0)){
+			createAccount(); 
+		}
+		else {
+			console.log("Fields not all valid")
+		}
 	}
 
     const navigate = useNavigate();
@@ -52,6 +83,7 @@ export default function SignUp() {
 							error={!isConfirmPasswordValid} onChange={(e)=>setConfirmPassword(e.target.value)} type="password" label="Confirm Password" variant='outlined' style={{width:'100%', background:'white'}}/>
 					</div>
 				</div>
+				<p className='error-message'>{errorMessage}</p>
 				<Button onClick={handleSubmit} variant="contained" color='success' size='large' style={{fontSize:"1.2rem", marginTop:"30px"}}>Submit</Button>
                 <Button onClick={()=>navigate("/login")} color='success' style={{marginTop:"20px"}}> Already have an account? Login </Button>
 			</div>
