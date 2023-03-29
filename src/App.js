@@ -11,19 +11,24 @@ import Contact from './components/Contact';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
 import AboutUs from './components/AboutUs';
+import Checkout from './components/Checkout';
+import { useState } from 'react';
 
 
 function App() {
+	const [cart,setCart] = useState([]);
+
 	return (
 		<Router>
 			<Routes>
 				<Route path="/" element={<Home/>} />
 				<Route path="/home" element={<Home/>} />
-				<Route path='/shop' element={<Shop/>} />
+				<Route path='/shop' element={<Shop setCart={setCart} cart={cart}/>} />
 				<Route path='/contact' element={<Contact/>} />
 				<Route path='/signup' element={<SignUp/>} />
 				<Route path='/login' element={<Login/>} />
 				<Route path='/about_us' element={<AboutUs/>} />
+				<Route path='/checkout' element={<Checkout cart={cart} setCart={setCart}/>} />
 			</Routes>
 		</Router>
   	);
