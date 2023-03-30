@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import NavBar from './NavBar';
 import { Grid, TextField, Modal, Box, Typography, Button } from '@mui/material';
 import "./shop.css"
@@ -14,44 +14,50 @@ const modalStyle = {
 	transform: 'translate(-50%, -50%)',
 	width: 400,
 	bgcolor: 'background.paper',
-	border: '2px solid #000',
 	boxShadow: 24,
 	p: 4,
+	borderRadius:"20px"
 };
 
-const {products} = data;
+// const {products} = data;
 
 export default function Shop({setCart, cart}) {
 	const navigate = useNavigate();
-	const [currentProduct, setCurrentProduct] = useState(products[0]);
+	const [products, setProducts] = useState([]);
+	const [currentProduct, setCurrentProduct] = useState({name:null,image_url:null,price:null,type:null,description:null});
 	const [quantity, setQuantity] = useState(0);
 	const [modalOpen, setModalOpen] = useState(false);
 	const handleModalOpen = () => setModalOpen(true);
 	const handleModalClose = () => setModalOpen(false);
 
+	useEffect(()=>{
+		fetch("/api/get/listproducts")
+			.then(async res => {
+				const prods = await res.json();
+				setProducts(prods);
+				setCurrentProduct(prods[0]);
+			})
+			.catch(err => console.error(err));
+	},[]);
 
 	function addToCart(){
+		if (quantity < 1) return
 		handleModalClose(); 
 		const product = {
 			...currentProduct,
 			quantity,
 		};
 		setCart([...cart, product]);
-		console.log(cart);
-	}
-
-	function goToCheckout(){
-
 	}
 	
 	return (
     	<div className='shop-container'>
-			<NavBar pages={["Home", "About Us", "Contact", "Login"]}/>
+			<NavBar pages={["Home", "About Us", "Contact"]}/>
 			<Grid container direction={"column"} style={{padding:"10px"}}>
 				<div className='header-section'>
 					
 					<div className='header-section-search'>
-						<Button onClick={()=>{navigate('/checkout')}} variant="contained" color="success" style={{fontSize:"1.1rem", position:"fixed", zIndex:1}}><ShoppingCartIcon/>&nbsp;Checkout</Button>
+						<Button disabled={cart.length === 0} onClick={()=>{navigate('/checkout')}} variant="contained" color="success" style={{fontSize:"1.1rem", position:"fixed", zIndex:1}}><ShoppingCartIcon/>&nbsp;Checkout</Button>
 
 						{/* <SearchIcon style={{marginTop:"20px"}} />
 						<TextField id="standard-basic" label="Search" variant="standard" /> */}
@@ -65,9 +71,9 @@ export default function Shop({setCart, cart}) {
 									setCurrentProduct(products[i]);
 									handleModalOpen();
 								}}>
-									<img className='product-card-image' src={product.img}/>
-									<h3 className='product-card-title'> {product.title} </h3>
-									<h4 className='product-card-price'>{product.price}</h4>
+									<img className='product-card-image' src={product.image_url}/>
+									<h3 className='product-card-title'> {product.name} </h3>
+									<h4 className='product-card-price'>${product.price}/oz</h4>
 								</div>
 							);
 						})}
@@ -82,15 +88,21 @@ export default function Shop({setCart, cart}) {
 			>
 				<Box sx={modalStyle}>
 						<div className='modal-card'>
-							<h1 className='modal-title'>{currentProduct.title}</h1>
-							<img className='modal-image' src={currentProduct.img} alt="marijuana-plant"/>
-							<h3 className='modal-price'>${currentProduct.price}/gram</h3>
-							<TextField id="outlined-basic" label="Quantity" variant="outlined" type="number"
-								onChange={e=>{
-									setQuantity(parseInt(e.target.value));
-								}}
-							 />
-							<Button onClick={addToCart} variant="contained" color="success" style={{fontSize:"1.1rem", marginTop:"25px"}}><AddShoppingCartIcon/>&nbsp;Add to Cart</Button>
+							<h1 className='modal-title'>{currentProduct.name}</h1>
+							<p className='modal-description'>{currentProduct.type}</p>
+							<img className='modal-image' src={currentProduct.image_url} alt="marijuana-plant"/>
+							<p className='modal-description'>{currentProduct.description}</p>
+							<h3 className='modal-price'>${currentProduct.price}/oz</h3>
+							<div style={{display:"flex"}}>
+								<TextField id="outlined-basic" label="Quantity" variant="outlined" type="number"
+									min={0}
+									onChange={e=>{
+										setQuantity(parseInt(e.target.value));
+									}}
+								/>
+								<Button onClick={addToCart} variant="contained" color="success" style={{fontSize:"1.1rem", margin:"0px 5px"}}><AddShoppingCartIcon/></Button>
+							</div>
+							
 						</div>
 				</Box>
 			</Modal>

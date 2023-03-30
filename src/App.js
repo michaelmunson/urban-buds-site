@@ -12,11 +12,15 @@ import SignUp from './components/SignUp';
 import Login from './components/Login';
 import AboutUs from './components/AboutUs';
 import Checkout from './components/Checkout';
+import Admin from './components/admin/Admin';
+import addViewStat from './utils/stats';
 import { useState } from 'react';
 
 
 function App() {
 	const [cart,setCart] = useState([]);
+
+	addViewStat(); 
 
 	return (
 		<Router>
@@ -29,6 +33,7 @@ function App() {
 				<Route path='/login' element={<Login/>} />
 				<Route path='/about_us' element={<AboutUs/>} />
 				<Route path='/checkout' element={<Checkout cart={cart} setCart={setCart}/>} />
+				<Route path="/admin" element={<Admin/>} />
 			</Routes>
 		</Router>
   	);

@@ -38,9 +38,52 @@ export const User = {
     }
 }
 
-export const Product = {
-    async listProducts(){
+export const Admin = {
+    async getAdmin(id){
+        return await Database.collection('admins').doc(id).get();
+    },
+    async getAdminData(id){
+        return (await this.getAdmin(id)).data();
+    },
+    async isAdmin(id){
+        return (await this.getAdmin(id)).exists;
+    },
+    async verifyAdmin(id,password){
+        if (await this.isAdmin(id)){
+            const adminData = await this.getAdminData(id);
+            return (password === adminData.password)
+        }
+        return false;
+    }
+}
 
+export const Product = {
+    async listProductData(){
+        const productArr = [];
+        const products = await Database.collection('products').get();
+        products.forEach(store => {
+            productArr.push(store.data());
+        });
+        return productArr;
+    },
+    async createProduct(data){
+        try {
+            const id = data.name;
+            return await Database.collection('products').doc(id).set(data);
+        }
+        catch(e){
+            return {
+                error: true,
+                message : e,
+            }
+        }
+    },
+    async removeProduct(idArray){
+        const results = [];
+        for (const id of idArray){
+            results.push(await Database.collection('products').doc(id).delete());
+        }
+        return results;
     }
 }
 
@@ -53,6 +96,33 @@ export const Store = {
     },
     async isStore(id){
         return (await this.getStore(id)).exists
+    },
+    async listStoreData(){
+        const storeArr = [];
+        const stores = await Database.collection('stores').get();
+        stores.forEach(store => {
+            storeArr.push(store.data());
+        });
+        return storeArr;
+    },
+    async createStore(data){
+        try {
+            const id = data.store_id;
+            return await Database.collection('stores').doc(id).set(data);
+        }
+        catch(e){
+            return {
+                error: true,
+                message : e,
+            }
+        }
+    },
+    async removeStore(idArray){
+        const results = [];
+        for (const id of idArray){
+            results.push(await Database.collection('stores').doc(id).delete());
+        }
+        return results;
     }
 }
 
@@ -78,6 +148,20 @@ export const Order = {
             error:false,
             orderId,
         }
+    }
+}
+
+export const Stats = {
+    async getViews(){
+        const result = await Database.collection('stats').doc('views').get();
+        return result.data();
+    },
+
+    async addView(isUnique){
+        const views = await this.getViews();
+        if (isUnique) views.unique++;
+        views.total++;
+        return await Database.collection('stats').doc('views').set(views);
     }
 }
 

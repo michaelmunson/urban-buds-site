@@ -16,28 +16,9 @@ const imageData = data.products;
 export default function Home() {
 	const navigate = useNavigate(); 
 
-	// function getUsers(){
-		// fetch("/api/users",{
-		// 	method: 'POST',
-		// 	body: JSON.stringify({
-		// 		"test":"test",
-		// 	}),
-		// 	headers: {
-		// 	  'Content-type': 'application/json; charset=UTF-8',
-		// 	}
-		// })
-		// .then(async res => {
-		// 	const result = await res.json();
-		// 	console.log(result)
-		// })
-		// .catch(err=>console.log(err));
-	// }
-
-	// getUsers();
-
 	return (
 		<>
-			<NavBar pages={['Shop','About Us', 'Contact', 'Login']}/>
+			<NavBar pages={['Shop','About Us', 'Contact']}/>
 			<Grid container direction={"column"}>
 				<div className='landing-page-section-1'>
 					<h1 className='main-header'>New Items, Great Deals</h1>

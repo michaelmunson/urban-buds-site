@@ -1,5 +1,38 @@
+General:
+    ✔ Remove login functionality @done (3/30/2023, 1:08:21 PM)
+
+Home:
+    ☐ Configure for mobile
+    ☐ redesign product display
 
 Shop:
-    ☐ configure CSS for mobile
-        ☐ grid media
-    ☐ 
+    ✔ configure grid media for mobile @done (3/28/2023, 10:56:09 PM)
+    ☐ Grab products from database
+    ☐ Add Price Table for Modal
+    ✔ Checkout button disabled until >1 items in cart @done (3/30/2023, 2:41:29 PM)
+    ✔ Quantity must be greater than 0 @done (3/30/2023, 3:36:26 PM)
+
+Checkout:
+    ☐ Add remove items buttons
+    ✔ Add total @done (3/30/2023, 5:29:51 PM)
+
+Admin:
+    ✔ Add Auth @done (3/30/2023, 1:35:33 PM)
+    ☐ Orders Chart
+    ☐ Daily viewers (total & unique)
+    ✔ Product Table @done (3/30/2023, 2:38:58 PM)
+        ✔ add table @done (3/29/2023, 7:49:47 PM)
+        ✔ add remove item from table @done (3/30/2023, 2:38:54 PM)
+    ✔ Store Table @done (3/30/2023, 2:39:00 PM)
+        ✔ add table @done (3/29/2023, 7:50:36 PM)
+        ✔ add remove item from table @done (3/30/2023, 2:38:56 PM)
+
+Contact:
+    ☐ Add send message functionality
+
+App Engine:
+    ☐ Figure out 503 Error nonsense
+
+SNS:
+    ✔ add SMS functionality @done (3/30/2023, 3:36:38 PM)
+    ✔ add email functionality @done (3/30/2023, 5:18:27 PM)

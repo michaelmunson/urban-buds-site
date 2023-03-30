@@ -24,7 +24,7 @@ export default function Contact() {
 
   	return (
 		<>
-			<NavBar pages={["Home", "Shop", "About Us", "Login"]}/>
+			<NavBar pages={["Home", "Shop", "About Us"]}/>
 			<div className='form-container'>
 				<h1 className='form-header'>Send us a message</h1>
 				<div className='form'>

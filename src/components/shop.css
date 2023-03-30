@@ -84,7 +84,7 @@
 }
 
 .product-card-image:hover {
-    transform:scale(1.1)
+    transform:scale(1.05)
 }
 
 .product-card-title {
@@ -106,11 +106,18 @@
 
 .modal-title {
     margin:0px;
+    font-family: 'Farsan';
 }
 
 .modal-image {
     height:200px;
-    margin:10px;
+    margin:35px;
+}
+
+.modal-description {
+    color:gray;
+    text-align: center;
+    margin:0px;
 }
 
 .modal-price {

@@ -1,5 +1,7 @@
 import express from "express";
-import { User, Database, Product, Store, Order} from "./database/database.mjs";
+import { User, Database, Product, Store, Order, Stats, Admin} from "./database/database.mjs";
+import sendSMS from "./twilio/sms.js";
+import sendEmail from "./mailjet/sendEmail.js";
 
 const app = express();
 app.use(express.json())
@@ -8,21 +10,88 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-app.post("/api/storeauth", async (req,res) => {
+/* AUTH */
+app.post("/api/auth/store", async (req,res) => {
     const {storeId} = req.body;
     const result = await Store.isStore(storeId);
+    let storeDetails = null;
+    if (result){
+        storeDetails = await Store.getStoreData(storeId);
+    }
     res.send({
-        isStore : result
+        isStore : result,
+        storeDetails,
     });
 });
 
-app.post("/api/createorder", async (req,res) => {
+app.post("/api/auth/verifyadmin", async (req,res) => {
+    const {id,password} = req.body;
+    const result = await Admin.verifyAdmin(id,password);
+    res.send({
+        isAuth : result,
+    });
+})
+
+/* STATS */
+app.post("/api/stats/addview", async (req,res) => {
+    const {isUnique} = req.body;
+    const result = await Stats.addView(isUnique);
+    res.send(result);
+});
+
+/* GET */
+app.get("/api/get/liststores", async (req,res) => {
+    res.send(await Store.listStoreData());
+});
+
+app.get("/api/get/listproducts", async (req,res) => {
+    res.send(await Product.listProductData());
+});
+
+/* CREAT */
+app.post("/api/create/store", async (req,res) => {
+    const result = await Store.createStore(req.body);
+    res.send(result);
+});
+
+app.post("/api/create/product", async (req,res) => {
+    const result = await Product.createProduct(req.body);
+    res.send(result);
+});
+
+app.post("/api/create/order", async (req,res) => {
     const {order} = req.body;
     const result = await Order.createOrder(order);
+    res.send(result);
+});
+
+/* REMOVE */
+app.post("/api/remove/store", async (req,res) => {
+    const {idArray} = req.body;
+    const result = await Store.removeStore(idArray);
+    res.send(result);
+});
+
+app.post("/api/remove/product", async (req,res) => {
+    const {idArray} = req.body;
+    const result = await Product.removeProduct(idArray);
+    res.send(result);
+});
+
+/* SNS */
+app.post("/api/sns/sendsms", async (req,res) => {
+    const {body,number} = req.body;
+    sendSMS(body,number);
     res.send({
-        ...result,
+        body,number
     })
-})
+});
+
+app.post("/api/sns/sendemail", async (req,res) => {
+    sendEmail(req.body);
+});
+
+
 
 // app.post("/api/signup", async (req,res) => {
 //     const result = await User.addUser(req.body);

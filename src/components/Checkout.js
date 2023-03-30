@@ -1,29 +1,19 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import NavBar from './NavBar';
 import { Grid, TextField, Modal, Box, Typography, Button } from '@mui/material';
 import "./checkout.css";
 import { useNavigate } from 'react-router-dom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import {sendSMS, sendEmail} from '../utils/sns';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const modalStyle = {
-	pointerEvents:"none",
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: 400,
-	bgcolor: 'background.paper',
-	border: '2px solid #000',
-	boxShadow: 24,
-	p: 4,
-};
 
-function AuthorizerModal({modalOpen, setModalOpen}){
-	const [storeId,setStoreId] = useState(null);
+function AuthorizerModal({modalOpen, setModalOpen, setStoreDetails}){
+	const [storeId,setStoreId] = useState("");
 	const [isError, setIsError] = useState(false);
 
 	function handleStoreAuth(){
-		fetch("/api/storeauth",{
+		fetch("/api/auth/store",{
 			method: 'POST',
 			body: JSON.stringify({
 				storeId,
@@ -36,6 +26,7 @@ function AuthorizerModal({modalOpen, setModalOpen}){
 			const result = await res.json();
 			if (result.isStore){
 				setModalOpen(false);
+				setStoreDetails(result.storeDetails);
 			}
 			else {
 				setIsError(true);
@@ -53,7 +44,7 @@ function AuthorizerModal({modalOpen, setModalOpen}){
 						setStoreId(e.target.value);
 					}}
 				/>
-				<Button onClick={handleStoreAuth} variant="contained" color="success" style={{fontSize:"1.1rem", marginTop:"25px"}}>Submit</Button>
+				<Button disabled={storeId.length === 0} onClick={handleStoreAuth} variant="contained" color="success" style={{fontSize:"1.1rem", marginTop:"25px"}}>Submit</Button>
 			</div>
 		</div>
 	)
@@ -61,14 +52,27 @@ function AuthorizerModal({modalOpen, setModalOpen}){
 
 export default function Checkout({cart, setCart}) {
 	const navigate = useNavigate();
-	const [modalOpen, setModalOpen] = useState(false);
+	const [modalOpen, setModalOpen] = useState(true);
 	const [isPlaceOrder, setIsPlaceOrder] = useState(false);
 	const [isPlaceOrderSuccess, setIsPlaceOrderSuccess] = useState(false);
 	const [orderId, setOrderId] = useState(""); 
+	const [storeDetails, setStoreDetails] = useState("");
+	const [total, setTotal] = useState(0);
+
+	useEffect(()=>{
+		if (cart.length === 0) navigate("/shop");
+		else {
+			let t = 0; 
+			for (const item of cart){
+				t += Math.round(((item.quantity * parseFloat(item.price)) + Number.EPSILON) * 100) / 100
+			}
+			setTotal(t);
+		}
+	},[])
 
 	function handlePlaceOrder(){
-		setIsPlaceOrder(true)
-		fetch("/api/createorder",{
+		setIsPlaceOrder(true);
+		fetch("/api/create/order",{
 			method: 'POST',
 			body: JSON.stringify({
 				order:cart,
@@ -79,9 +83,99 @@ export default function Checkout({cart, setCart}) {
 		})
 		.then(async res => {
 			const result = await res.json();
-			console.log(result);
 			setOrderId(result.orderId)
 			if (!result.error){
+				sendEmail([
+					{
+						email : "michael.s.munson@outlook.com",
+						subject : "NEW ORDER",
+						body : `
+							<style>
+								table {
+								font-family: arial, sans-serif;
+								border-collapse: collapse;
+								width: 100%;
+								}
+
+								td, th {
+								border: 1px solid #dddddd;
+								text-align: left;
+								padding: 8px;
+								}
+
+								tr:nth-child(even) {
+								background-color: #dddddd;
+								}
+							</style>
+							<h1>NEW ORDER PLACED</h1>
+							<h2>Order – #${result.orderId}</h2>
+							<hr/>
+							<h3>Customer</h3>
+							<p>ID: <b>${storeDetails.store_id}</b></p>
+							<p>Address: <b>${storeDetails.address}</b></p>
+							<p>Phone: <b>${storeDetails.phone}</b></p>
+							<hr/>
+							<h3>Order Details</h3>
+							<table>
+								<tr>
+									<th>Strain</th>
+									<th>Quantity (oz)</th>
+								</tr>
+								${cart.map(item => (
+									`
+									<tr>
+										<td> ${item.name} </td>
+										<td> ${item.quantity} </td>
+									</tr>
+									`
+								))}
+							</table>
+						`
+					},
+					{
+						email: storeDetails.email,
+						subject: "Urban Buds Order Reciept",
+						body : `
+							<style>
+								table {
+								font-family: arial, sans-serif;
+								border-collapse: collapse;
+								width: 100%;
+								}
+
+								td, th {
+								border: 1px solid #dddddd;
+								text-align: left;
+								padding: 8px;
+								}
+
+								tr:nth-child(even) {
+								background-color: #dddddd;
+								}
+							</style>
+							<h1>ORDER RECEIPT</h1>
+							<p>Thanks for shopping with Urban Buds</p>
+							<h2>Order – #${result.orderId}</h2>
+							<hr/>
+							<h3>Order Details</h3>
+							<table>
+								<tr>
+									<th>Strain</th>
+									<th>Quantity (oz)</th>
+								</tr>
+								${cart.map(item => (
+									`
+									<tr>
+										<td> ${item.name} </td>
+										<td> ${item.quantity} </td>
+									</tr>
+									`
+								))}
+							</table>
+						`
+					}
+				])
+				sendSMS(`ORDER PLACED – #${result.orderId}`, '6313180947');
 				setIsPlaceOrderSuccess(true);
 				setCart([]);
 			}
@@ -89,11 +183,10 @@ export default function Checkout({cart, setCart}) {
 		.catch(err=>console.log(err));
 	}
 
-
 	if (isPlaceOrderSuccess){
 		return (
 			<>
-				<NavBar pages={["Home", "About Us", "Contact", "Login"]}/>
+				<NavBar pages={["Home", "About Us", "Contact"]}/>
 				<div className='checkout-success-container'>
 					<CheckCircleIcon style={{color:"green",fontSize:"4rem"}}/>
 					<h1 className='checkout-success-header'>Order Placed</h1>
@@ -113,18 +206,22 @@ export default function Checkout({cart, setCart}) {
 				{cart.map((item,index) => (
 					<div className='checkout-item' key={"key#"+index}>
 						<div>
-							<img className='checkout-item-image' src={item.img}/>
+							<img className='checkout-item-image' src={item.image_url}/>
 						</div>
 						<div className='checkout-item-details'>
-							<p>Strain: <b>{item.title}</b></p>
+							<p>Strain: <b>{item.name}</b></p>
 							<p>Quantity: <b>{item.quantity} oz</b></p>
 							<p>Subtotal: <b>${Math.round(((item.quantity * parseFloat(item.price)) + Number.EPSILON) * 100) / 100}</b></p>
 						</div>
+						<div>
+							<Button variant="text" size={"large"} color="error"><DeleteIcon/></Button>
+						</div>
 					</div>
 				))}
+				<h2 style={{textAlign:"right",fontWeight:"normal"}}>Total: <b>${total}</b></h2>
 				<Button disabled={isPlaceOrder} onClick={handlePlaceOrder} variant="contained" color="success" style={{fontSize:"1.1rem", marginTop:"25px"}}>Place Order</Button>
 			</div>
-			<AuthorizerModal modalOpen={modalOpen} setModalOpen={setModalOpen}/>
+			<AuthorizerModal modalOpen={modalOpen} setModalOpen={setModalOpen} setStoreDetails={setStoreDetails}/>
 		</>
 		
   	)

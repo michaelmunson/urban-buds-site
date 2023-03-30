@@ -2,14 +2,12 @@ import { TextField, Button } from '@mui/material';
 import React from 'react';
 import NavBar from './NavBar';
 import "./aboutus.css"
-import { useNavigate } from 'react-router-dom';
 
 
 export default function AboutUs() {
-    const navigate = useNavigate();
   	return (
 		<>
-			<NavBar pages={["Home", "Shop", "Contact", "Login"]}/>
+			<NavBar pages={["Home", "Shop", "Contact"]}/>
 			<div className='about-us-container'>
 				<h1 className='about-us-header'>About Us</h1>
                 <p className='about-us-text'>
