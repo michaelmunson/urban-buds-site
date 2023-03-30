@@ -68,7 +68,7 @@ export default function Checkout({cart, setCart}) {
 			}
 			setTotal(t);
 		}
-	},[])
+	},[cart])
 
 	function handlePlaceOrder(){
 		setIsPlaceOrder(true);
@@ -183,6 +183,10 @@ export default function Checkout({cart, setCart}) {
 		.catch(err=>console.log(err));
 	}
 
+	function handleRemoveItem(itemName){
+		setCart(cart.filter(item => item.name !== itemName));
+	}
+
 	if (isPlaceOrderSuccess){
 		return (
 			<>
@@ -203,21 +207,25 @@ export default function Checkout({cart, setCart}) {
 			<NavBar pages={["Home", "About Us", "Contact", "Login"]}/>
 			<div className='checkout-container'>
 				<h1 className='checkout-header'>Your Cart</h1>
-				{cart.map((item,index) => (
-					<div className='checkout-item' key={"key#"+index}>
-						<div>
-							<img className='checkout-item-image' src={item.image_url}/>
+				<div className='checkout-item-container'>
+					{cart.map((item,index) => (
+						<div className='checkout-item' key={"key#"+index}>
+							<div>
+								<img className='checkout-item-image' src={item.image_url}/>
+							</div>
+							<div className='checkout-item-details'>
+								<p>Strain: <b>{item.name}</b></p>
+								<p>Quantity: <b>{item.quantity} oz</b></p>
+								<p>Subtotal: <b>${Math.round(((item.quantity * parseFloat(item.price)) + Number.EPSILON) * 100) / 100}</b></p>
+							</div>
+							<div className='checkout-delete-item'>
+								<Button variant="text" size={"large"} color="error"
+									onClick={() => handleRemoveItem(item.name)}
+								><DeleteIcon/></Button>
+							</div>
 						</div>
-						<div className='checkout-item-details'>
-							<p>Strain: <b>{item.name}</b></p>
-							<p>Quantity: <b>{item.quantity} oz</b></p>
-							<p>Subtotal: <b>${Math.round(((item.quantity * parseFloat(item.price)) + Number.EPSILON) * 100) / 100}</b></p>
-						</div>
-						<div>
-							<Button variant="text" size={"large"} color="error"><DeleteIcon/></Button>
-						</div>
-					</div>
-				))}
+					))}
+				</div>
 				<h2 style={{textAlign:"right",fontWeight:"normal"}}>Total: <b>${total}</b></h2>
 				<Button disabled={isPlaceOrder} onClick={handlePlaceOrder} variant="contained" color="success" style={{fontSize:"1.1rem", marginTop:"25px"}}>Place Order</Button>
 			</div>

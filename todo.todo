@@ -13,7 +13,7 @@ Shop:
     ✔ Quantity must be greater than 0 @done (3/30/2023, 3:36:26 PM)
 
 Checkout:
-    ☐ Add remove items buttons
+    ✔ Add remove items buttons @done (3/30/2023, 5:53:37 PM)
     ✔ Add total @done (3/30/2023, 5:29:51 PM)
 
 Admin:
