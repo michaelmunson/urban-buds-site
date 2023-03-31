@@ -5,6 +5,7 @@ import DatabaseTable from './DatabaseTable';
 import "./database-manager.css"
 import { textAlign } from '@mui/system';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DATA from "../../data.json";
 
 const modalStyle = {
 	position: 'absolute',
@@ -21,67 +22,8 @@ const modalStyle = {
 	flexDirection: "column",
 };
 
-const inputSchema = {
-	stores : [
-		{
-            id: 'store_id', 
-            label: 'ID', 
-            type:"text"
-        },
-        { 
-            id: 'address', 
-            label: 'Address', 
-            type:"text"
-        },
-        {
-            id: 'store_name',
-            label: 'Name',
-            type:"text"
-        },
-        {
-            id: 'email',
-            label: 'Email',
-            type:"text"
-        },
-        {
-            id: 'phone',
-            label: 'Phone',
-            type:"text"
-        },
-        {
-            id: 'contact_name',
-            label: 'Contact',
-            type:"text"
-        }
-	],
-	products : [
-		{
-            id: 'name', 
-            label: 'Name', 
-            type:"text"
-        },
-        { 
-            id: 'price', 
-            label: 'Price', 
-            type:"number"
-        },
-        {
-            id: 'type',
-            label: 'Type',
-            type:"text"
-        },
-        {
-            id: 'description',
-            label: 'Desc.',
-            type:"text"
-        },
-        {
-            id: 'image_url',
-            label: 'Image URL',
-            type:"text"
-        },
-	]
-}
+const {schema} = DATA;
+
 
 export default function DatabaseManager({setPage}) {
 	const [table, setTable] = useState("stores");
@@ -146,7 +88,7 @@ export default function DatabaseManager({setPage}) {
 		.then(async res => {
 			const result = (await res.json());
 			window.location.reload();
-			// const schemaID = inputSchema[table][0].id;
+			// const schemaID = schema[table][0].id;
 			// const dataTable = (table==="stores")?storeData:productData;
 			// const setDataFunc = (table==="stores")?setStoreData:setProductData;
 			// let newData = dataTable;
@@ -184,7 +126,7 @@ export default function DatabaseManager({setPage}) {
 						<Button variant="contained" size='large' onClick={handleModalOpen}>Add {table[0].toUpperCase() + table.slice(1,table.length-1)}</Button>
 					</div>
 				</div>
-				<DatabaseTable table={table} data={(table==="stores")?storeData:productData} checkedRows={checkedRows} setCheckedRows={setCheckedRows}/>
+				<DatabaseTable columns={schema} table={table} data={(table==="stores")?storeData:productData} checkedRows={checkedRows} setCheckedRows={setCheckedRows}/>
 			</div>
 			<Modal
 				open={modalOpen}
@@ -194,7 +136,7 @@ export default function DatabaseManager({setPage}) {
 			>
 				<Box sx={modalStyle}>
 					<h2 style={{textAlign:"center",margin:5}}>{table[0].toUpperCase() + table.slice(1,table.length-1)} Input</h2>
-					{inputSchema[table].map((input,i) => {
+					{schema[table].map((input,i) => {
 						return (
 							<TextField id={input.id} label={input.label} type={input.type} variant="outlined" style={{margin:"10px"}} onBlur={e => handleDataInput(input.id, e.target.value)} key={`key${i}`}/>
 						)

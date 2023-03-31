@@ -9,6 +9,9 @@ Shop:
     ✔ configure grid media for mobile @done (3/28/2023, 10:56:09 PM)
     ☐ Grab products from database
     ☐ Add Price Table for Modal
+    ☐ add preroll product section
+    ☐ add filter for different products
+
     ✔ Checkout button disabled until >1 items in cart @done (3/30/2023, 2:41:29 PM)
     ✔ Quantity must be greater than 0 @done (3/30/2023, 3:36:26 PM)
 
@@ -36,3 +39,6 @@ App Engine:
 SNS:
     ✔ add SMS functionality @done (3/30/2023, 3:36:38 PM)
     ✔ add email functionality @done (3/30/2023, 5:18:27 PM)
+
+QR Code:
+    ☐ research QR code generator

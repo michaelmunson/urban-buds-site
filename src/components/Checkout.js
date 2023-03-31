@@ -6,6 +6,19 @@ import { useNavigate } from 'react-router-dom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {sendSMS, sendEmail} from '../utils/sns';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DATA from "../data.json";
+
+const {priceTable} = DATA;
+const getPrice = (ptype, quantity) => {
+	const ptable = priceTable[ptype];
+	let price;
+	for (const opt of ptable){
+		if (quantity >= opt.quantityRangeLow && quantity <= opt.quantityRangeHigh){
+			price = opt.price;
+			return price;
+		}
+	}
+}
 
 
 function AuthorizerModal({modalOpen, setModalOpen, setStoreDetails}){
@@ -64,11 +77,11 @@ export default function Checkout({cart, setCart}) {
 		else {
 			let t = 0; 
 			for (const item of cart){
-				t += Math.round(((item.quantity * parseFloat(item.price)) + Number.EPSILON) * 100) / 100
+				t += Math.round(((item.quantity * parseFloat(getPrice(item.price,item.quantity))) + Number.EPSILON) * 100) / 100
 			}
 			setTotal(t);
 		}
-	},[cart])
+	},[]);
 
 	function handlePlaceOrder(){
 		setIsPlaceOrder(true);
@@ -184,7 +197,9 @@ export default function Checkout({cart, setCart}) {
 	}
 
 	function handleRemoveItem(itemName){
-		setCart(cart.filter(item => item.name !== itemName));
+		const newCart = cart.filter(item => item.name !== itemName);
+		setCart(newCart);
+		if (newCart.length < 1) navigate("/shop");
 	}
 
 	if (isPlaceOrderSuccess){
@@ -216,7 +231,7 @@ export default function Checkout({cart, setCart}) {
 							<div className='checkout-item-details'>
 								<p>Strain: <b>{item.name}</b></p>
 								<p>Quantity: <b>{item.quantity} oz</b></p>
-								<p>Subtotal: <b>${Math.round(((item.quantity * parseFloat(item.price)) + Number.EPSILON) * 100) / 100}</b></p>
+								<p>Subtotal: <b>${Math.round(((item.quantity * parseFloat(getPrice(item.price,item.quantity))) + Number.EPSILON) * 100) / 100}</b></p>
 							</div>
 							<div className='checkout-delete-item'>
 								<Button variant="text" size={"large"} color="error"

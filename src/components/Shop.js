@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import NavBar from './NavBar';
 import { Grid, TextField, Modal, Box, Typography, Button } from '@mui/material';
 import "./shop.css"
-import data from "../data.json";
+import DATA from "../data.json";
 import { useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -12,19 +12,20 @@ const modalStyle = {
 	top: '50%',
 	left: '50%',
 	transform: 'translate(-50%, -50%)',
-	width: 400,
+	maxWidth:"75vw",
 	bgcolor: 'background.paper',
 	boxShadow: 24,
 	p: 4,
 	borderRadius:"20px"
 };
 
-// const {products} = data;
+const {priceTable} = DATA;
+const displayPrice = ptype => priceTable[ptype][0].price;
 
 export default function Shop({setCart, cart}) {
 	const navigate = useNavigate();
 	const [products, setProducts] = useState([]);
-	const [currentProduct, setCurrentProduct] = useState({name:null,image_url:null,price:null,type:null,description:null});
+	const [currentProduct, setCurrentProduct] = useState(null);
 	const [quantity, setQuantity] = useState(0);
 	const [modalOpen, setModalOpen] = useState(false);
 	const handleModalOpen = () => setModalOpen(true);
@@ -49,6 +50,8 @@ export default function Shop({setCart, cart}) {
 		};
 		setCart([...cart, product]);
 	}
+
+	if (!currentProduct) return (<div></div>)
 	
 	return (
     	<div className='shop-container'>
@@ -73,7 +76,7 @@ export default function Shop({setCart, cart}) {
 								}}>
 									<img className='product-card-image' src={product.image_url}/>
 									<h3 className='product-card-title'> {product.name} </h3>
-									<h4 className='product-card-price'>${product.price}/oz</h4>
+									<h4 className='product-card-price'>Starting @ <b>${displayPrice(product.price)}</b></h4>
 								</div>
 							);
 						})}
@@ -89,10 +92,31 @@ export default function Shop({setCart, cart}) {
 				<Box sx={modalStyle}>
 						<div className='modal-card'>
 							<h1 className='modal-title'>{currentProduct.name}</h1>
-							<p className='modal-description'>{currentProduct.type}</p>
+							<p className='modal-description'>{currentProduct.strain_type}</p>
 							<img className='modal-image' src={currentProduct.image_url} alt="marijuana-plant"/>
 							<p className='modal-description'>{currentProduct.description}</p>
-							<h3 className='modal-price'>${currentProduct.price}/oz</h3>
+							<div className='modal-table-container'>
+								<table className='modal-table'>
+									<tr>
+										<th>Quantity</th>
+										<th>Price</th>
+									</tr>
+									{priceTable[currentProduct.price].map((price,i) => (
+										<tr>
+											<td>
+											{
+												(price.quantityRangeHigh < 0)
+													? `${price.quantityRangeLow}+`
+													: `${price.quantityRangeLow}-${price.quantityRangeHigh}`
+											}
+											</td>
+											<td>
+												${price.price}/{price.per}
+											</td>
+										</tr>
+									))}
+								</table>
+							</div>
 							<div style={{display:"flex"}}>
 								<TextField id="outlined-basic" label="Quantity" variant="outlined" type="number"
 									min={0}

@@ -3,8 +3,8 @@
 /* HEADER SECTION */
 
 .shop-container {
-    background-image: url("../images/curvyLines.png");
-    background-size: cover;
+    /* background-image: url("../images/curvyLines.png");
+    background-size: cover; */
 }
 
 .header-section {
@@ -122,4 +122,32 @@
 
 .modal-price {
     font-size: 1.5rem;
+}
+
+.modal-table-container {
+    margin:15px;
+    border: 1px solid black;
+    border-radius: 7px;
+    width: 100%;
+}
+
+.modal-table {
+    position: relative;
+    z-index: -10;
+    border-collapse: collapse;
+    /* border:1px solid black; */
+    width: 100%;
+}
+
+.modal-table tr {
+    border-radius: 5px;
+}
+  
+.modal-table td, .modal-table th {
+    text-align: center;
+    padding: 8px;
+}
+
+.modal-table tr:nth-child(even) {
+    background-color: #edeaea;
 }
