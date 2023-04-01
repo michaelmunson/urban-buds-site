@@ -11,18 +11,19 @@ Shop:
     ☐ Add Price Table for Modal
     ☐ add preroll product section
     ☐ add filter for different products
-
     ✔ Checkout button disabled until >1 items in cart @done (3/30/2023, 2:41:29 PM)
     ✔ Quantity must be greater than 0 @done (3/30/2023, 3:36:26 PM)
 
 Checkout:
     ✔ Add remove items buttons @done (3/30/2023, 5:53:37 PM)
     ✔ Add total @done (3/30/2023, 5:29:51 PM)
+    ☐ fix total (total does not change when removing product from cart)
 
 Admin:
     ✔ Add Auth @done (3/30/2023, 1:35:33 PM)
     ☐ Orders Chart
     ☐ Daily viewers (total & unique)
+    ☐ fix remove data (data not removing)
     ✔ Product Table @done (3/30/2023, 2:38:58 PM)
         ✔ add table @done (3/29/2023, 7:49:47 PM)
         ✔ add remove item from table @done (3/30/2023, 2:38:54 PM)
@@ -41,4 +42,4 @@ SNS:
     ✔ add email functionality @done (3/30/2023, 5:18:27 PM)
 
 QR Code:
-    ☐ research QR code generator
+    ✔ research QR code generator @done (3/31/2023, 8:56:48 PM)
