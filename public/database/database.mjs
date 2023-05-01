@@ -133,6 +133,15 @@ export const Order = {
         return await Database.collection('orders').count().get();
     },
 
+    async getOrders(){
+        const orders = [];
+        const ordersRef = await Database.collection("orders").get();
+        ordersRef.forEach(order => {
+            orders.push(order.data());
+        });
+        return {orders}
+    },
+
     async createOrder(orderReq){
         const orderNum = (await this.getNumOrders())._data.count + 45; 
         let orderPrefix = "";
@@ -154,15 +163,17 @@ export const Order = {
 
 export const Stats = {
     async getViews(){
-        const result = await Database.collection('stats').doc('views').get();
-        return result.data();
+        const views = [];
+        const result = await Database.collection('stats').doc('website').get();
+        (await result.ref.collection("views").get()).forEach(view => {
+            views.push(view.data());
+        });
+        return {views};
     },
 
-    async addView(isUnique){
-        const views = await this.getViews();
-        if (isUnique) views.unique++;
-        views.total++;
-        return await Database.collection('stats').doc('views').set(views);
+    async addView(req){
+        const result = await Database.collection('stats').doc('website').get();
+        return result.ref.collection("views").add(req);
     }
 }
 

@@ -7,13 +7,13 @@ import Login from '../Login';
 
 export default function Admin() {
 	const navigate = useNavigate();
-	const [page, setPage] = useState("DB Manager");
+	const [page, setPage] = useState("Dashboard");
 
 	useEffect(()=>{
 		if (!isAdminAuth()){
 			navigate("/login");
 		}
-	},[])
+	},[]);
 
   	if (page==="Dashboard") {
 		return <Dashboard setPage={setPage}/>

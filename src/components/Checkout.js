@@ -23,7 +23,7 @@ const getPrice = (item) => {
 	const {quantity,prices} = item;
 	let price = 0;
 	for (const p of prices){
-		if (quantity > p.low && (quantity < p.high || p.high < 0)){
+		if (quantity >= p.low && (quantity <= p.high || p.high < 0)){
 			price = p.price;
 		}
 	}
@@ -100,6 +100,7 @@ export default function Checkout({cart, setCart}) {
 			body: JSON.stringify({
 				order:cart,
 				storeDetails,
+				timestamp : Date.now(),
 			}),
 			headers: {
 			  'Content-type': 'application/json; charset=UTF-8',
@@ -200,7 +201,7 @@ export default function Checkout({cart, setCart}) {
 						`
 					}
 				])
-				sendSMS(`ORDER PLACED — ${orderId}`,'6313180947');
+				sendSMS(`ORDER PLACED — ${result.orderId}`,'6313180947');
 				setIsPlaceOrderSuccess(true);
 				setCart([]);
 			}

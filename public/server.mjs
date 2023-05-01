@@ -40,8 +40,7 @@ app.post("/api/auth/verifyadmin", async (req,res) => {
 
 /* STATS */
 app.post("/api/stats/addview", async (req,res) => {
-    const {isUnique} = req.body;
-    const result = await Stats.addView(isUnique);
+    const result = await Stats.addView(req.body);
     res.send(result);
 });
 
@@ -54,7 +53,17 @@ app.get("/api/get/listproducts", async (req,res) => {
     res.send(await Product.listProductData());
 });
 
-/* CREAT */
+app.get("/api/get/views", async (req,res) => {
+    const result = await Stats.getViews();
+    res.json(result);
+});
+
+app.get("/api/get/orders", async (req,res) => {
+    const result = await Order.getOrders();
+    res.send(result);
+})
+
+/* CREATE */
 app.post("/api/create/store", async (req,res) => {
     const result = await Store.createStore(req.body);
     res.send(result);
