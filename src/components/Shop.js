@@ -5,6 +5,7 @@ import "./shop.css"
 import { useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import comingSoon from "../images/coming-soon.png"
 
 const modalStyle = {
 	position: 'absolute',
@@ -24,6 +25,7 @@ export default function Shop({setCart, cart}) {
 	const [currentProduct, setCurrentProduct] = useState(null);
 	const [quantity, setQuantity] = useState(0);
 	const [modalOpen, setModalOpen] = useState(false);
+	const [modalErrorMessage,setModalErrorMessage] = useState("")
 	const handleModalOpen = () => setModalOpen(true);
 	const handleModalClose = () => setModalOpen(false);
 
@@ -38,7 +40,10 @@ export default function Shop({setCart, cart}) {
 	},[]);
 
 	function addToCart(){
-		if (quantity < currentProduct.prices[0].low) return
+		if (quantity < currentProduct.prices[0].low){
+			setModalErrorMessage(`Quantity must be greater than ${currentProduct.prices[0].low}`);
+			return
+		}
 		handleModalClose(); 
 		const product = {
 			...currentProduct,
@@ -63,14 +68,21 @@ export default function Shop({setCart, cart}) {
 					<div className='product-grid'>
 						{products.map((product,i) => {
 							return (
-								<div className='product-card' key={`key${i}`} onClick={()=>{
-									setCurrentProduct(products[i]);
-									handleModalOpen();
-								}}>
-									<img className='product-card-image' src={product.image_url}/>
-									<h3 className='product-card-title'> {product.name} </h3>
-									<h4 className='product-card-price'>Starting @ <b>${product.prices[0].price}/{product.per}</b></h4>
+								<div style={{position:"relative"}}>
+									{(product.inventory_type === "soon")
+										? <img src={comingSoon} className='coming-soon-image'/>
+										: ""
+									}
+									<div className={(product.inventory_type === "soon")?'product-card coming-soon':"product-card"} key={`key${i}`} onClick={()=>{
+										setCurrentProduct(products[i]);
+										handleModalOpen();
+									}}>
+										<img className='product-card-image' src={product.image_url}/>
+										<h3 className='product-card-title'> {product.name} </h3>
+										<h4 className='product-card-price'>Starting @ <b>${product.prices[0].price}/{product.per}</b></h4>
+									</div>
 								</div>
+								
 							);
 						})}
 					</div>
@@ -111,7 +123,14 @@ export default function Shop({setCart, cart}) {
 								</table>
 							</div>
 							<div style={{display:"flex"}}>
-								<TextField id="outlined-basic" label="Quantity" variant="outlined" type="number"
+								<TextField 
+									disabled={currentProduct.inventory_type !== "standard"} 
+									id="outlined-basic" 
+									label="Quantity" 
+									variant="outlined" 
+									type="number"
+									error={(modalErrorMessage.length > 0)}
+									helperText={modalErrorMessage}
 									min={0}
 									onChange={e=>{
 										setQuantity(parseInt(e.target.value));

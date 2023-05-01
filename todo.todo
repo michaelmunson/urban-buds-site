@@ -1,6 +1,7 @@
 General:
     ✔ Remove login functionality @done (3/30/2023, 1:08:21 PM)
-    ☐ redirect to https
+    ✔ redirect to https @done (5/1/2023, 5:26:37 PM)
+    ☐ automate inventory changes
 
 Home:
     ☐ Configure for mobile
@@ -11,7 +12,6 @@ Shop:
     ✔ Grab products from database @done (4/2/2023, 8:27:45 PM)
     ✔ Add Price Table for Modal @done (4/2/2023, 8:27:43 PM)
     ✔ add preroll product section @done (4/2/2023, 8:27:39 PM)
-    ☐ add filter for different products
     ✔ fix "per" part of product modal @done (5/1/2023, 4:36:27 PM)
     ✔ add [coming soon, out of stock, low inventory] products @done (5/1/2023, 4:36:29 PM)
     ☐ add UI for coming soon, etc...
@@ -26,16 +26,16 @@ Shop:
 Checkout:
     ✔ Add remove items buttons @done (3/30/2023, 5:53:37 PM)
     ✔ Add total @done (3/30/2023, 5:29:51 PM)
-    ☐ fix total (total does not change when removing product from cart)
-    ☐ fix total calculation for quantity overflow
+    ✔ fix total (total does not change when removing product from cart) @done (5/1/2023, 5:26:42 PM)
+    ✔ fix total calculation for quantity overflow @done (5/1/2023, 5:26:56 PM)
     ☐ add store info to order data
 
 Admin:
     ✔ Add Auth @done (3/30/2023, 1:35:33 PM)
     ☐ Orders Chart
     ☐ Daily viewers (total & unique)
-    ☐ fix remove data (data not removing) in orders
-    ☐ make pricing a select (high or low)
+    ✔ fix remove data (data not removing) in orders @done (5/1/2023, 4:53:53 PM)
+    ✔ make pricing a select (high or low) @done (5/1/2023, 4:53:54 PM)
     ✔ Product Table @done (3/30/2023, 2:38:58 PM)
         ✔ add table @done (3/29/2023, 7:49:47 PM)
         ✔ add remove item from table @done (3/30/2023, 2:38:54 PM)

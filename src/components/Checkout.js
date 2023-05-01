@@ -80,9 +80,9 @@ export default function Checkout({cart, setCart}) {
 	const [orderId, setOrderId] = useState(""); 
 	const [storeDetails, setStoreDetails] = useState("");
 	const [total, setTotal] = useState(0);
+	const [version, setVersion] = useState(0);
 
 	useEffect(()=>{
-		console.log(cart)
 		if (cart.length === 0) navigate("/shop");
 		else {
 			let t = 0; 
@@ -91,7 +91,7 @@ export default function Checkout({cart, setCart}) {
 			}
 			setTotal(t);
 		}
-	},[]);
+	},[version]);
 
 	function handlePlaceOrder(){
 		setIsPlaceOrder(true);
@@ -211,6 +211,7 @@ export default function Checkout({cart, setCart}) {
 	function handleRemoveItem(itemName){
 		const newCart = cart.filter(item => item.name !== itemName);
 		setCart(newCart);
+		setVersion(version+1);
 		if (newCart.length < 1) navigate("/shop");
 	}
 

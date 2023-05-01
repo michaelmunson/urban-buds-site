@@ -76,6 +76,9 @@
     align-items: center;
     cursor: pointer;
 }
+.product-card.coming-soon {
+    opacity:.5;
+}
 
 .product-card-image {
     height:200px;
@@ -95,6 +98,15 @@
     margin:5px;
     color:gray;
 }
+
+.coming-soon-image {
+    position: absolute;
+    z-index: 100;
+    width:150px;
+    top:30%;
+    right:33%;
+}
+
 
 /* MODAL SECTION */
 
