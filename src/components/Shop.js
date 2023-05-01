@@ -44,6 +44,7 @@ export default function Shop({setCart, cart}) {
 			setModalErrorMessage(`Quantity must be greater than ${currentProduct.prices[0].low}`);
 			return
 		}
+		setModalErrorMessage("")
 		handleModalClose(); 
 		const product = {
 			...currentProduct,

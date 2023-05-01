@@ -90,7 +90,7 @@ app.post("/api/sns/sendsms", async (req,res) => {
     sendSMS(body,number);
     res.send({
         body,number
-    })
+    });
 });
 
 app.post("/api/sns/sendemail", async (req,res) => {
