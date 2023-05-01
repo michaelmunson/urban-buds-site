@@ -10,7 +10,8 @@
 
 # production
 /build
-/public/twilio/sms.js
+/public/twilio/
+/public/mailjet
 
 # misc
 .DS_Store
