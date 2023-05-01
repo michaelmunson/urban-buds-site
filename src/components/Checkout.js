@@ -8,18 +8,27 @@ import {sendSMS, sendEmail} from '../utils/sns';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DATA from "../data.json";
 
-const {priceTable} = DATA;
-const getPrice = (ptype, quantity) => {
-	const ptable = priceTable[ptype];
-	let price;
-	for (const opt of ptable){
-		if (quantity >= opt.quantityRangeLow && quantity <= opt.quantityRangeHigh){
-			price = opt.price;
-			return price;
+// const {priceTable} = DATA;
+// const getPrice = (ptype, quantity) => {
+// 	const ptable = priceTable[ptype];
+// 	let price;
+// 	for (const opt of ptable){
+// 		if (quantity >= opt.quantityRangeLow && quantity <= opt.quantityRangeHigh){
+// 			price = opt.price;
+// 			return price;
+// 		}
+// 	}
+// }
+const getPrice = (item) => {
+	const {quantity,prices} = item;
+	let price = 0;
+	for (const p of prices){
+		if (quantity > p.low && (quantity < p.high || p.high < 0)){
+			price = p.price;
 		}
 	}
+	return Math.round(((quantity * parseFloat(price)) + Number.EPSILON) * 100) / 100
 }
-
 
 function AuthorizerModal({modalOpen, setModalOpen, setStoreDetails}){
 	const [storeId,setStoreId] = useState("");
@@ -73,11 +82,12 @@ export default function Checkout({cart, setCart}) {
 	const [total, setTotal] = useState(0);
 
 	useEffect(()=>{
+		console.log(cart)
 		if (cart.length === 0) navigate("/shop");
 		else {
 			let t = 0; 
 			for (const item of cart){
-				t += Math.round(((item.quantity * parseFloat(getPrice(item.price,item.quantity))) + Number.EPSILON) * 100) / 100
+				t += getPrice(item);
 			}
 			setTotal(t);
 		}
@@ -89,6 +99,7 @@ export default function Checkout({cart, setCart}) {
 			method: 'POST',
 			body: JSON.stringify({
 				order:cart,
+				storeDetails,
 			}),
 			headers: {
 			  'Content-type': 'application/json; charset=UTF-8',
@@ -167,7 +178,8 @@ export default function Checkout({cart, setCart}) {
 								}
 							</style>
 							<h1>ORDER RECEIPT</h1>
-							<p>Thanks for shopping with Urban Buds</p>
+							<p>Thanks for shopping with Urban Buds!</p>
+							<p>You will recieve a text by the end of the business day regarding the estimated delivery time of your order.</p>
 							<h2>Order – #${result.orderId}</h2>
 							<hr/>
 							<h3>Order Details</h3>
@@ -188,7 +200,7 @@ export default function Checkout({cart, setCart}) {
 						`
 					}
 				])
-				sendSMS(`ORDER PLACED – #${result.orderId}`, '6313180947');
+				sendSMS(`ORDER PLACED — ${orderId}`,'6313180947');
 				setIsPlaceOrderSuccess(true);
 				setCart([]);
 			}
@@ -231,7 +243,7 @@ export default function Checkout({cart, setCart}) {
 							<div className='checkout-item-details'>
 								<p>Strain: <b>{item.name}</b></p>
 								<p>Quantity: <b>{item.quantity} oz</b></p>
-								<p>Subtotal: <b>${Math.round(((item.quantity * parseFloat(getPrice(item.price,item.quantity))) + Number.EPSILON) * 100) / 100}</b></p>
+								<p>Subtotal: <b>${getPrice(item)}</b></p>
 							</div>
 							<div className='checkout-delete-item'>
 								<Button variant="text" size={"large"} color="error"

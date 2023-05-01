@@ -1,10 +1,11 @@
 import { Firestore } from "@google-cloud/firestore";
 
-
 export const Database = new Firestore({
   projectId: 'urban-buds-site',
   keyFilename: '/Users/michael/code/urban-buds-site/urban-buds-site-8e63bf883471.json',
 });
+
+// export const Database = new Firestore();
 
 export const User = {
     async getUser(id){
@@ -132,7 +133,7 @@ export const Order = {
         return await Database.collection('orders').count().get();
     },
 
-    async createOrder(order){
+    async createOrder(orderReq){
         const orderNum = (await this.getNumOrders())._data.count + 45; 
         let orderPrefix = "";
 
@@ -142,7 +143,7 @@ export const Order = {
 
         const orderId = orderPrefix + orderNum;
 
-        const result = await Database.collection('orders').doc(orderId).set({order});
+        const result = await Database.collection('orders').doc(orderId).set({...orderReq});
         return {
             ...result,
             error:false,

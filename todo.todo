@@ -1,16 +1,25 @@
 General:
     ✔ Remove login functionality @done (3/30/2023, 1:08:21 PM)
+    ☐ redirect to https
 
 Home:
     ☐ Configure for mobile
-    ☐ redesign product display
+    ✔ redesign product display @done (5/1/2023, 4:41:08 PM)
 
 Shop:
     ✔ configure grid media for mobile @done (3/28/2023, 10:56:09 PM)
-    ☐ Grab products from database
-    ☐ Add Price Table for Modal
-    ☐ add preroll product section
+    ✔ Grab products from database @done (4/2/2023, 8:27:45 PM)
+    ✔ Add Price Table for Modal @done (4/2/2023, 8:27:43 PM)
+    ✔ add preroll product section @done (4/2/2023, 8:27:39 PM)
     ☐ add filter for different products
+    ✔ fix "per" part of product modal @done (5/1/2023, 4:36:27 PM)
+    ✔ add [coming soon, out of stock, low inventory] products @done (5/1/2023, 4:36:29 PM)
+    ☐ add UI for coming soon, etc...
+
+    Quantity Stuff:
+        ✔ for preroll change table to [25-49, 50+][$10, $8] @done (5/1/2023, 4:36:49 PM)
+        ✔ $/(each|preroll) @done (5/1/2023, 4:36:50 PM)
+        ✔ for pens change table to [10-24,25-49,50+][$25,$20,$15] @done (5/1/2023, 4:36:52 PM)
     ✔ Checkout button disabled until >1 items in cart @done (3/30/2023, 2:41:29 PM)
     ✔ Quantity must be greater than 0 @done (3/30/2023, 3:36:26 PM)
 
@@ -18,12 +27,15 @@ Checkout:
     ✔ Add remove items buttons @done (3/30/2023, 5:53:37 PM)
     ✔ Add total @done (3/30/2023, 5:29:51 PM)
     ☐ fix total (total does not change when removing product from cart)
+    ☐ fix total calculation for quantity overflow
+    ☐ add store info to order data
 
 Admin:
     ✔ Add Auth @done (3/30/2023, 1:35:33 PM)
     ☐ Orders Chart
     ☐ Daily viewers (total & unique)
-    ☐ fix remove data (data not removing)
+    ☐ fix remove data (data not removing) in orders
+    ☐ make pricing a select (high or low)
     ✔ Product Table @done (3/30/2023, 2:38:58 PM)
         ✔ add table @done (3/29/2023, 7:49:47 PM)
         ✔ add remove item from table @done (3/30/2023, 2:38:54 PM)
@@ -35,7 +47,7 @@ Contact:
     ☐ Add send message functionality
 
 App Engine:
-    ☐ Figure out 503 Error nonsense
+    ✔ Figure out 503 Error nonsense @done (4/16/2023, 1:50:32 AM)
 
 SNS:
     ✔ add SMS functionality @done (3/30/2023, 3:36:38 PM)

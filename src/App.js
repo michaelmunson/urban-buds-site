@@ -14,13 +14,22 @@ import AboutUs from './components/AboutUs';
 import Checkout from './components/Checkout';
 import Admin from './components/admin/Admin';
 import addViewStat from './utils/stats';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 function App() {
 	const [cart,setCart] = useState([]);
 
-	addViewStat(); 
+	useEffect(()=>{
+		redirect();
+	},[])
+
+	function redirect(){
+		const {href,protocol} = window.location;
+		if (protocol === "http:" && !href.includes("localhost")){
+			window.location.href = href.replace("http:","https:");
+		}
+	}
 
 	return (
 		<Router>

@@ -1,6 +1,6 @@
 import { Button, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from './NavBar';
 import "./home.css"
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -15,6 +15,16 @@ const imageData = data.products;
 
 export default function Home() {
 	const navigate = useNavigate(); 
+	const [productData, setProductData] = useState([]);
+
+	useEffect(()=>{
+		fetch("/api/get/listproducts")
+			.then(async res => {
+				const result = await res.json();
+				setProductData(result);
+			})
+			.catch(err => console.error(err));
+	},[]);
 
 	return (
 		<>
@@ -31,12 +41,12 @@ export default function Home() {
 				<div className='landing-page-section-2'>
 					<div className='basic-card'>
 						<AttachMoneyIcon style={{fontSize:"4rem"}}/>
-						<h2>Great Deals</h2>
+						<h2>Deals</h2>
 						<p>We provide the best deals on the market – in terms of both quality and price. </p>
 					</div>
 					<div className='basic-card'>
 						<SpeedIcon style={{fontSize:"4rem"}}/>
-						<h2>Speedy Delivery</h2>
+						<h2>Speed</h2>
 						<p>Quick deliveries ensure you never have to worry about going without product. </p>
 					</div>
 					<div className='basic-card'>
@@ -47,20 +57,20 @@ export default function Home() {
 				</div>
 				<div className='landing-page-section-3'>
 					<h2 style={{fontFamily: "'Farsan', cursive", fontSize:"3rem"}}> Check out our products! </h2>
-					<ImageList sx={{ width: "75%"}} cols={3}>
-						{imageData.map((item) => (
+					<ImageList sx={{ width: "75%"}} cols={2}>
+						{productData.map((item) => (
 							<ImageListItem 
-								key={item.img} 
+								key={item.image_url} 
 								className="weed-image-list-item"
 								onClick={()=>navigate("/shop")}>
 							<img
-								src={`${item.img}`}
-								alt={item.title}
+								src={`${item.image_url}`}
+								alt={item.name}
 								loading="lazy"
 								className='weed-image'
 							/>
 							<ImageListItemBar
-								title={item.title}
+								title={item.name}
 								className="weed-image-list-item-bar"
 							/>
 							</ImageListItem>

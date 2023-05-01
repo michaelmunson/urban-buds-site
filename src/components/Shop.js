@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import NavBar from './NavBar';
 import { Grid, TextField, Modal, Box, Typography, Button } from '@mui/material';
 import "./shop.css"
-import DATA from "../data.json";
 import { useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -18,9 +17,6 @@ const modalStyle = {
 	p: 4,
 	borderRadius:"20px"
 };
-
-const {priceTable} = DATA;
-const displayPrice = ptype => priceTable[ptype][0].price;
 
 export default function Shop({setCart, cart}) {
 	const navigate = useNavigate();
@@ -42,7 +38,7 @@ export default function Shop({setCart, cart}) {
 	},[]);
 
 	function addToCart(){
-		if (quantity < 1) return
+		if (quantity < currentProduct.prices[0].low) return
 		handleModalClose(); 
 		const product = {
 			...currentProduct,
@@ -61,9 +57,6 @@ export default function Shop({setCart, cart}) {
 					
 					<div className='header-section-search'>
 						<Button disabled={cart.length === 0} onClick={()=>{navigate('/checkout')}} variant="contained" color="success" style={{fontSize:"1.1rem", position:"fixed", zIndex:1}}><ShoppingCartIcon/>&nbsp;Checkout</Button>
-
-						{/* <SearchIcon style={{marginTop:"20px"}} />
-						<TextField id="standard-basic" label="Search" variant="standard" /> */}
 					</div>
 				</div>
 				<div className='product-section'>
@@ -76,7 +69,7 @@ export default function Shop({setCart, cart}) {
 								}}>
 									<img className='product-card-image' src={product.image_url}/>
 									<h3 className='product-card-title'> {product.name} </h3>
-									<h4 className='product-card-price'>Starting @ <b>${displayPrice(product.price)}</b></h4>
+									<h4 className='product-card-price'>Starting @ <b>${product.prices[0].price}/{product.per}</b></h4>
 								</div>
 							);
 						})}
@@ -101,17 +94,17 @@ export default function Shop({setCart, cart}) {
 										<th>Quantity</th>
 										<th>Price</th>
 									</tr>
-									{priceTable[currentProduct.price].map((price,i) => (
-										<tr>
+									{currentProduct.prices.map((price,i) => (
+										<tr key={`key${i}`}>
 											<td>
 											{
-												(price.quantityRangeHigh < 0)
-													? `${price.quantityRangeLow}+`
-													: `${price.quantityRangeLow}-${price.quantityRangeHigh}`
+												(price.high < 0)
+													? `${price.low}+`
+													: `${price.low} – ${price.high}`
 											}
 											</td>
 											<td>
-												${price.price}/{price.per}
+												${price.price}/{currentProduct.per}
 											</td>
 										</tr>
 									))}

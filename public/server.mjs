@@ -6,8 +6,14 @@ import sendEmail from "./mailjet/sendEmail.js";
 const app = express();
 app.use(express.json())
 
-app.get('/', (req, res) => {
-    res.render('index');
+// app.get('/', (req, res) => {
+//     res.render('index');
+// });
+
+app.get('/api/test', (req,res) => {
+    res.send({
+        status: 200
+    });
 });
 
 /* AUTH */
@@ -30,7 +36,7 @@ app.post("/api/auth/verifyadmin", async (req,res) => {
     res.send({
         isAuth : result,
     });
-})
+});
 
 /* STATS */
 app.post("/api/stats/addview", async (req,res) => {
@@ -60,8 +66,8 @@ app.post("/api/create/product", async (req,res) => {
 });
 
 app.post("/api/create/order", async (req,res) => {
-    const {order} = req.body;
-    const result = await Order.createOrder(order);
+    const orderReq = req.body;
+    const result = await Order.createOrder(orderReq);
     res.send(result);
 });
 
@@ -99,6 +105,7 @@ app.post("/api/sns/sendemail", async (req,res) => {
 // });
   
 const PORT = process.env.PORT || 9000;
+
 app.listen(PORT, () => {
   	console.log(`Server listening on port ${PORT}...`);
 });

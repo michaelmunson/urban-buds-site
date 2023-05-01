@@ -74,12 +74,10 @@
             {"id":"contact_name","label":"Contact","minWidth":100,"type":"text"}
         ],
         "products":[
-            {"id":"type","label":"Type","minWidth":100,"type":"text"},
-            {"id":"name","label":"Name","minWidth":170,"type":"text"},
-            {"id":"strain_type","label":"Strain Type","minWidth":100,"type":"text"},
-            {"id":"price","label":"Pricing (high/low)","minWidth":100,"type":"text"},
-            {"id":"per","label":"Per","minWidth":100,"type":"text"},
-            {"id":"description","label":"Desc.","minWidth":100,"type":"text"},
+            {"id":"name","label":"Name","minWidth":100,"type":"text"},
+            {"id":"strain_type","label":"Strain Type","minWidth":80,"type":"text"},
+            {"id":"inventory_type","label":"Inv. Type","minWidth":80,"type":"text"},
+            {"id":"description","label":"Desc.","minWidth":400,"type":"text"},
             {"id":"image_url","label":"Image URL","minWidth":100,"type":"text"}
         ]
     },
@@ -94,19 +92,13 @@
             {
                 "quantityRangeLow" : 4,
                 "quantityRangeHigh" : 7,
-                "price" : 168.75,
+                "price" : 165,
                 "per" : "oz"
             },
             {
                 "quantityRangeLow" : 8,
-                "quantityRangeHigh" : 15,
-                "price" : 150,
-                "per" : "oz"
-            },
-            {
-                "quantityRangeLow" : 16,
                 "quantityRangeHigh" : -1,
-                "price" : 131.25,
+                "price" : 150,
                 "per" : "oz"
             }
         ],
