@@ -14,7 +14,7 @@ Shop:
     ✔ add preroll product section @done (4/2/2023, 8:27:39 PM)
     ✔ fix "per" part of product modal @done (5/1/2023, 4:36:27 PM)
     ✔ add [coming soon, out of stock, low inventory] products @done (5/1/2023, 4:36:29 PM)
-    ☐ add UI for coming soon, etc...
+    ✔ add UI for coming soon, etc... @done (5/2/2023, 12:14:04 AM)
 
     Quantity Stuff:
         ✔ for preroll change table to [25-49, 50+][$10, $8] @done (5/1/2023, 4:36:49 PM)
@@ -31,12 +31,15 @@ Checkout:
     ☐ add store info to order data
 
 Admin:
-    DB Manager:
-        ☐ radio group (for inv type) on change
     ✔ Add Auth @done (3/30/2023, 1:35:33 PM)
-    ☐ Orders Chart
-    ☐ Daily viewers (total & unique)
-    
+
+    DB Manager:
+        ✔ radio group (for inv type) on change @done (5/2/2023, 12:13:42 AM)
+    Dashboard: 
+        ✔ Orders Chart @done (5/2/2023, 12:12:01 AM)
+        ✔ Daily viewers Chart (total & unique) @done (5/2/2023, 12:12:07 AM)
+        ☐ Orders Table
+
     ✔ fix remove data (data not removing) in orders @done (5/1/2023, 4:53:53 PM)
     ✔ make pricing a select (high or low) @done (5/1/2023, 4:53:54 PM)
     ✔ Product Table @done (3/30/2023, 2:38:58 PM)

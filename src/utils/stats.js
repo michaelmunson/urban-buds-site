@@ -136,8 +136,8 @@ export async function formatStats(){
                     {
                         label : "Orders",
                         data : [],
-                        borderColor : "rgb(255, 99, 132)",
-                        backgroundColor: "rgba(255, 99, 132, 0.5)"
+                        borderColor : "green",
+                        backgroundColor: "green"
                     }
                 ]
             },
@@ -147,8 +147,8 @@ export async function formatStats(){
                     {
                         label : "Orders",
                         data : [],
-                        borderColor : "rgb(255, 99, 132)",
-                        backgroundColor: "rgba(255, 99, 132, 0.5)"
+                        borderColor : "green",
+                        backgroundColor: "rgba(0,128,1,.5)"
                     }
                 ]
             },
@@ -278,7 +278,7 @@ export async function formatStats(){
                 const ordersArr = orders
                     .filter(ord => isInCurrentYear(new Date(ord.timestamp)))
                     .filter(ord => new Date(ord.timestamp).getMonth() === i);
-                this.orders.year.datasets[0].data.push(orders.length);
+                this.orders.year.datasets[0].data.push(ordersArr.length);
             }
         },
         

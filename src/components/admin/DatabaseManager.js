@@ -222,6 +222,7 @@ export default function DatabaseManager({setPage}) {
 									aria-labelledby="demo-radio-buttons-group-label"
 									defaultValue="standard"
 									name="radio-buttons-group"
+									onChange={e => handleDataInput("inventory_type",e.target.value)}
 								>
 									<FormControlLabel value="standard" control={<Radio />} label="Standard" />
 									<FormControlLabel value="soon" control={<Radio />} label="Coming Soon" />
