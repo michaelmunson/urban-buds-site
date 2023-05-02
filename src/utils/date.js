@@ -23,3 +23,16 @@ export function isInCurrentWeek(date) {
     return date >= firstDayOfWeek && date <= lastDayOfWeek;
 }
 
+export function isInCurrentMonth(date) {
+    const now = new Date();
+    return (
+        now.getMonth() === date.getMonth()
+        && now.getFullYear() === date.getFullYear()
+    )
+}
+
+export function isInCurrentYear(date) {
+    const now = new Date();
+    return now.getFullYear() === date.getFullYear();
+}
+

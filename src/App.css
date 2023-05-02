@@ -5,6 +5,12 @@ html,body {
   margin:0;
   height:100%;
   width:100%;
-  font-family: 'Quicksand', sans-serif;
+  font-family: 'Quicksand', sans-serif !important;
+}
+
+#root {
+  /* margin:0;
+  height:100%;
+  width:100%; */
 }
 
