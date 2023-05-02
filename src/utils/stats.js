@@ -1,3 +1,6 @@
+import date from "date-and-time";
+import { isInCurrentWeek, isToday } from "./date";
+
 
 function handleViewStats(isUnique){
     fetch("/api/stats/addview", {
@@ -35,7 +38,7 @@ export async function getViewStats(){
     });
 
     return {
-        views,
+        allViews : views,
         uniqueViews : views.filter(view => view.isUnique)
     };
 }
@@ -50,4 +53,89 @@ export async function getStats(){
     const orders = await getOrderStats();
     const views = await getViewStats();
     return {orders,views}
+}
+
+export async function formatStats(){
+    const {orders,views} = await getStats();
+    const {allViews,uniqueViews} = views;
+    const data = {
+        views : {
+            day : {
+                labels : ["0:00","3:00","6:00","9:00","12:00","15:00","18:00","21:00","23:59"],
+                datasets : [
+                    {
+                        label : "Unique Views",
+                        data : [],
+                        borderColor : "rgb(255, 99, 132)",
+                        backgroundColor: "rgba(255, 99, 132, 0.5)"
+                    },
+                    {
+                        label : "Total Views",
+                        data : [],
+                        borderColor : "rgb(53, 162, 235)",
+                        backgroundColor: "rgba(53, 162, 235, 0.5)"
+                    }
+                ]
+            },
+            week : {
+                labels : ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+                datasets : [
+                    {
+                        label : "Unique Views",
+                        data : [],
+                        borderColor : "rgb(255, 99, 132)",
+                        backgroundColor: "rgba(255, 99, 132, 0.5)"
+                    },
+                    {
+                        label : "Total Views",
+                        data : [],
+                        borderColor : "rgb(53, 162, 235)",
+                        backgroundColor: "rgba(53, 162, 235, 0.5)"
+                    }
+                ]
+            },
+            month : {},
+            year : {},
+        },
+        orders : {
+            day : [],
+            week : [],
+            month : [],
+            year : [],
+        },
+        setDayViews(){
+            for (let i = 0; i <= 24; i += 3){
+                const allViewsArr = allViews
+                    .filter(view => isToday(new Date(view.timestamp)))
+                    .filter(view => {
+                    const HH = parseInt(date.format(new Date(view.timestamp),"HH"));
+                    return (HH >= i && HH < i+3)
+                });
+                const uniqueViewsArr = uniqueViews
+                    .filter(view => isToday(new Date(view.timestamp)))
+                    .filter(view => {
+                    const HH = parseInt(date.format(new Date(view.timestamp),"HH"));
+                    return (HH >= i && HH < i+3)
+                });
+                this.views.day.datasets[0].data.push(uniqueViewsArr.length);
+                this.views.day.datasets[1].data.push(allViewsArr.length);
+            }
+        },
+        setWeekViews(){
+            for (let i = 0; i < 7; i += 1){
+                const allViewsArr = allViews
+                    .filter(view => isInCurrentWeek(new Date(view.timestamp)))
+                    .filter(view => new Date(view.timestamp).getDay() === i);
+                const uniqueViewsArr = uniqueViews
+                    .filter(view => isInCurrentWeek(new Date(view.timestamp)))
+                    .filter(view => new Date(view.timestamp).getDay() === i);
+                this.views.week.datasets[0].data.push(uniqueViewsArr.length);
+                this.views.week.datasets[1].data.push(allViewsArr.length);
+            }
+            console.log(this.views);
+        }
+    }
+    data.setDayViews();
+    data.setWeekViews();
+    return {views:data.views, orders:data.orders};
 }

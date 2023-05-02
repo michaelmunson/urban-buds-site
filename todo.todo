@@ -31,9 +31,12 @@ Checkout:
     ☐ add store info to order data
 
 Admin:
+    DB Manager:
+        ☐ radio group (for inv type) on change
     ✔ Add Auth @done (3/30/2023, 1:35:33 PM)
     ☐ Orders Chart
     ☐ Daily viewers (total & unique)
+    
     ✔ fix remove data (data not removing) in orders @done (5/1/2023, 4:53:53 PM)
     ✔ make pricing a select (high or low) @done (5/1/2023, 4:53:54 PM)
     ✔ Product Table @done (3/30/2023, 2:38:58 PM)
