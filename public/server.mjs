@@ -80,6 +80,11 @@ app.post("/api/create/order", async (req,res) => {
     res.send(result);
 });
 
+app.post("/api/order/setstatus", async (req,res) => {
+    const result = await Order.changeStatus(req.body);
+    res.json(result);
+});
+
 /* REMOVE */
 app.post("/api/remove/store", async (req,res) => {
     const {idArray} = req.body;

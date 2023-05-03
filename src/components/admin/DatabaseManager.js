@@ -1,10 +1,13 @@
-import React, {useEffect, useState, useRef} from 'react';
-import AdminNavBar from './AdminNavBar';
-import {Radio, RadioGroup, FormControlLabel, FormLabel, Box, Modal, Button,FormControl, Select, MenuItem,TextField } from '@mui/material';
-import DatabaseTable from './DatabaseTable';
-import "./database-manager.css"
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Button, FormControl, FormControlLabel, MenuItem, Modal, Radio, RadioGroup, Select, TextField } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+import { PulseLoader } from 'react-spinners';
 import DATA from "../../data.json";
+import FullPageSpinner from '../utils/FullPageSpinner';
+import AdminNavBar from './AdminNavBar';
+import DatabaseTable from './DatabaseTable';
+import "./database-manager.css";
+
 
 const modalStyle = {
 	position: 'absolute',
@@ -27,20 +30,32 @@ const modalStyle = {
 const {schema} = DATA;
 
 
-export default function DatabaseManager({setPage}) {
+export default function DatabaseManager() {
 	const priceInputRef = useRef(null);
-	const [table, setTable] = useState("stores");
+	const [loading,setLoading] = useState(true);
+	const [table, setTable] = useState("products");
 	const [storeData, setStoreData] = useState([]);
 	const [productData, setProductData] = useState([]);
+	const [isUpdateData, setIsUpdateData] = useState(false);
+	const [updateData, setUpdateData] = useState({});
 	const [modalOpen, setModalOpen] = useState(false);
 	const [dataInput, setDataInput] = useState({
-		store_id : "",
-		address : "",
-		store_name : "",
-		email : "",
-		phone : "",
-		contact_name : ""
+		name : "",
+		strain_type : "",
+		inventory_type : "standard",
+		prices : [],
+		description : "",
+		image_url : "",
+		per : ""
 	});
+	// const [dataInput, setDataInput] = useState({
+	// 	store_id : "",
+	// 	address : "",
+	// 	store_name : "",
+	// 	email : "",
+	// 	phone : "",
+	// 	contact_name : ""
+	// });
 	const [numPriceInput, setNumPriceInput] = useState(1);
 	const [lowPrices,setLowPrices] = useState([1]);
 	const [addingData, setAddingData] = useState(false);
@@ -51,6 +66,18 @@ export default function DatabaseManager({setPage}) {
 		setModalOpen(false);
 		setNumPriceInput(1);
 		setLowPrices([1]);
+		if (isUpdateData){
+			setIsUpdateData(false);
+			setDataInput({
+				name : "",
+				strain_type : "",
+				inventory_type : "standard",
+				prices : [],
+				description : "",
+				image_url : "",
+				per : ""
+			})
+		}
 	};
 
 	useEffect(()=>{
@@ -59,7 +86,11 @@ export default function DatabaseManager({setPage}) {
 			.catch(err => console.error(err));
 
 		fetch("/api/get/listproducts")
-			.then(async res => setProductData(await res.json()))
+			.then(async res => {
+				res = await res.json()
+				setProductData(res);
+				setLoading(false);
+			})
 			.catch(err => console.error(err));
 	}, [version]);
 
@@ -148,12 +179,18 @@ export default function DatabaseManager({setPage}) {
 		})
 		.then(async res => {
 			const result = (await res.json());
-			console.log(result);
-			if (table==="stores") setStoreData([...storeData, dataInput]);
-			else setProductData([...productData, dataInput]);
-			handleModalClose();
-			setAddingData(false);
-			setDataInput({});
+			if (isUpdateData){
+				setVersion(version+1);
+				handleModalClose();
+				setAddingData(false);
+			}
+			else {
+				if (table==="stores") setStoreData([...storeData, dataInput]);
+				else setProductData([...productData, dataInput]);
+				handleModalClose();
+				setAddingData(false);
+				setDataInput({});
+			}
 		})
 		.catch(err => console.error(err));
 	}
@@ -176,10 +213,17 @@ export default function DatabaseManager({setPage}) {
 		})
 		.catch(err => console.error(err));
 	}
+
+	function handlePreUpdate(data){
+		setIsUpdateData(true);
+		setDataInput(data);
+		handleModalOpen();
+	}
 	
   	return (
     	<>
-			<AdminNavBar pages={["Dashboard", "DB Manager"]} setPage={setPage}/>
+			<FullPageSpinner loading={loading} backdropBlur={true}/>
+			<AdminNavBar/>
 			<div className='dbmanager-container'>
 				<div className='dbmanager-head'>
 					<FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -198,7 +242,14 @@ export default function DatabaseManager({setPage}) {
 						<Button variant="contained" size='large' onClick={handleModalOpen}>Add {table[0].toUpperCase() + table.slice(1,table.length-1)}</Button>
 					</div>
 				</div>
-				<DatabaseTable columns={schema} table={table} data={(table==="stores")?storeData:productData} checkedRows={checkedRows} setCheckedRows={setCheckedRows}/>
+				<DatabaseTable 
+					columns={schema}
+					table={table} 
+					data={(table==="stores")?storeData:productData} 
+					checkedRows={checkedRows} 
+					setCheckedRows={setCheckedRows} 
+					handlePreUpdate={handlePreUpdate}
+				/>
 			</div>
 			<Modal
 				open={modalOpen}
@@ -207,11 +258,11 @@ export default function DatabaseManager({setPage}) {
 				aria-describedby="modal-modal-description"
 			>
 				<Box sx={modalStyle}>
-					{/* <h2 style={{textAlign:"center",margin:5}}>{table[0].toUpperCase() + table.slice(1,table.length-1)} Input</h2> */}
+					{/* <h2 style={{textAlign:"center",paddingBottom:10,margin:0}}>{(isUpdateData)?"Update":"Add"} {table[0].toUpperCase() + table.slice(1,table.length-1)}</h2> */}
 					{
 						(table === "stores") ? schema[table].map((input,i) => {
 							return (
-								<TextField id={input.id} label={input.label} type={input.type} variant="outlined" style={{margin:"10px"}} onBlur={e => handleDataInput(input.id, e.target.value)} key={`key${i}`}/>
+								<TextField value={dataInput[input.id]} id={input.id} label={input.label} type={input.type} variant="outlined" style={{margin:"10px"}} onChange={e => handleDataInput(input.id, e.target.value)} key={`key${i}`}/>
 							)
 						})
 						: 
@@ -220,7 +271,7 @@ export default function DatabaseManager({setPage}) {
 								<RadioGroup
 									row
 									aria-labelledby="demo-radio-buttons-group-label"
-									defaultValue="standard"
+									defaultValue={dataInput.inventory_type}
 									name="radio-buttons-group"
 									onChange={e => handleDataInput("inventory_type",e.target.value)}
 								>
@@ -229,29 +280,41 @@ export default function DatabaseManager({setPage}) {
 									<FormControlLabel value="out" control={<Radio />} label="Out of Stock" />
 								</RadioGroup>
 							</FormControl>
-							{/* <TextField label="Type" type="text" variant="outlined" style={{margin:"5px"}} onChange={e => handleDataInput("type", e.target.value)}/> */}
-							<TextField label="Name" type="text" variant="outlined" style={{margin:"5px"}} onChange={e => handleDataInput("name", e.target.value)}/>
-							<TextField label="Strain" type="text" variant="outlined" style={{margin:"5px"}} onChange={e => handleDataInput("strain_type", e.target.value)}/>
-							<TextField label="Description" type="text" variant="outlined" style={{margin:"5px"}} onChange={e => handleDataInput("description", e.target.value)}/>
-							<TextField label="Image URL" type="text" variant="outlined" style={{margin:"5px"}} onChange={e => handleDataInput("image_url", e.target.value)}/>
-							
+							<TextField value={dataInput.name} label="Name" type="text" variant="outlined" style={{margin:"5px"}} onChange={e => handleDataInput("name", e.target.value)}/>
+							<TextField value={dataInput.strain_type}  label="Strain" type="text" variant="outlined" style={{margin:"5px"}} onChange={e => handleDataInput("strain_type", e.target.value)}/>
+							<TextField value={dataInput.description} label="Description" type="text" variant="outlined" style={{margin:"5px"}} onChange={e => handleDataInput("description", e.target.value)}/>
+							<TextField value={dataInput.image_url} label="Image URL" type="text" variant="outlined" style={{margin:"5px"}} onChange={e => handleDataInput("image_url", e.target.value)}/>
+							{/* <Textarea/> */}
 							
 							<p style={{textAlign:"center",fontWeight:"bold"}}>Pricing</p>
-							<TextField label="Per (unit)" type="text" variant="outlined" style={{margin:"5px"}} onChange={e => handleDataInput("per", e.target.value)}/>
+							<TextField value={dataInput.per} label="Per (unit)" type="text" variant="outlined" style={{margin:"5px"}} onChange={e => handleDataInput("per", e.target.value)}/>
 							<div ref={priceInputRef}>
-							{Array.from(Array(numPriceInput)).map((c, index) => {
-								return <div style={{display:"flex",margin:"5px",justifyContent:"center"}} key={`key${index}`}>
-									<TextField label="Low Range" type="text" variant="outlined" value={lowPrices[index]}/>
-									<TextField label="High Range" type="text" variant="outlined"/>
-									<TextField label="Price" type="number" variant="outlined"/>
-								</div>
-							})}
+								{
+								(!isUpdateData)
+								? Array.from(Array(numPriceInput)).map((c, index) => {
+									return <div style={{display:"flex",margin:"5px",justifyContent:"center"}} key={`key${index}`}>
+										<TextField label="Low Range" type="text" variant="outlined" value={lowPrices[index]}/>
+										<TextField label="High Range" type="text" variant="outlined"/>
+										<TextField label="Price" type="number" variant="outlined"/>
+									</div>
+								})
+								: dataInput.prices.map((c,index) => {
+									return <div style={{display:"flex",margin:"5px",justifyContent:"center"}} key={`key${index}`}>
+										<TextField label="Low Range" type="text" variant="outlined" value={c.low}/>
+										<TextField label="High Range" type="text" variant="outlined" value={(c.high===-1)?"+":c.high}/>
+										<TextField label="Price" type="number" variant="outlined" value={c.price}/>
+									</div>
+								})
+								}
 							</div>
-							<Button onClick={handleAddPriceRow}>Add</Button>
+							<Button onClick={handleAddPriceRow}>+ Row</Button>
 						</>
 					}
 					<div style={{textAlign:"center",margin:"15px 0px 0px 0px"}}>
-						<Button disabled={addingData} variant="contained" size='large' onClick={handleAddData}>Submit</Button>
+						{(addingData)
+						? <PulseLoader color="#36d7b7" />
+						: <Button disabled={addingData} variant="contained" size='large' onClick={handleAddData}>{(isUpdateData)?"Update":"Add"} {table[0].toUpperCase() + table.slice(1,table.length-1)}</Button>
+						}
 					</div>
 				</Box>
 			</Modal>

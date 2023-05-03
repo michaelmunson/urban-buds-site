@@ -1,5 +1,6 @@
 import date from "date-and-time";
 import { isInCurrentMonth, isInCurrentWeek, isInCurrentYear, isToday } from "./date";
+import { isLocalhost } from "./location";
 
 
 function handleViewStats(isUnique){
@@ -19,7 +20,9 @@ function handleViewStats(isUnique){
     .catch(err=>console.log(err));
 }
 
-export function addViewStat(){
+export function addViewStat(options = {localhost:false}){
+    if (!options.localhost && isLocalhost()) return;
+
     if (localStorage.getItem("hasVisited")){
         handleViewStats(false);
     }

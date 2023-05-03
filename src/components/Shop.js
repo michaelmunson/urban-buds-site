@@ -1,11 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import NavBar from './NavBar';
-import { Grid, TextField, Modal, Box, Typography, Button } from '@mui/material';
-import "./shop.css"
-import { useNavigate } from 'react-router-dom';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import comingSoon from "../images/coming-soon.png"
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Box, Button, Grid, Modal, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import comingSoon from "../images/coming-soon.png";
+import NavBar from './NavBar';
+import "./shop.css";
+import FullPageSpinner from './utils/FullPageSpinner';
+import InventorySticker from './utils/InventorySticker';
 
 const modalStyle = {
 	position: 'absolute',
@@ -21,6 +23,7 @@ const modalStyle = {
 
 export default function Shop({setCart, cart}) {
 	const navigate = useNavigate();
+	const [loading,setLoading] = useState(true);
 	const [products, setProducts] = useState([]);
 	const [currentProduct, setCurrentProduct] = useState(null);
 	const [quantity, setQuantity] = useState(0);
@@ -35,6 +38,7 @@ export default function Shop({setCart, cart}) {
 				const prods = await res.json();
 				setProducts(prods);
 				setCurrentProduct(prods[0]);
+				setLoading(false);
 			})
 			.catch(err => console.error(err));
 	},[]);
@@ -57,6 +61,7 @@ export default function Shop({setCart, cart}) {
 	
 	return (
     	<div className='shop-container'>
+			<FullPageSpinner loading={loading}/>
 			<NavBar pages={["Home", "About Us", "Contact"]}/>
 			<Grid container direction={"column"} style={{padding:"10px"}}>
 				<div className='header-section'>
@@ -70,14 +75,15 @@ export default function Shop({setCart, cart}) {
 						{products.map((product,i) => {
 							return (
 								<div style={{position:"relative"}}>
-									{(product.inventory_type === "soon")
-										? <img src={comingSoon} className='coming-soon-image'/>
-										: ""
-									}
-									<div className={(product.inventory_type === "soon")?'product-card coming-soon':"product-card"} key={`key${i}`} onClick={()=>{
+									<InventorySticker type={product.inventory_type}/>
+
+									<div style={{position:"relative"}} className={(product.inventory_type === "soon" || product.inventory_type === "out")?'product-card coming-soon':"product-card"} key={`key${i}`} onClick={()=>{
 										setCurrentProduct(products[i]);
-										handleModalOpen();
+										if (product.inventory_type === "standard" || product.inventory_type === "low"){
+											handleModalOpen();
+										}
 									}}>
+
 										<img className='product-card-image' src={product.image_url}/>
 										<h3 className='product-card-title'> {product.name} </h3>
 										<h4 className='product-card-price'>Starting @ <b>${product.prices[0].price}/{product.per}</b></h4>

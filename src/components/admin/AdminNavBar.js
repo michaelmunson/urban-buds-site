@@ -17,7 +17,8 @@ import { useNavigate } from 'react-router-dom';
 // const pages = ['Shop', 'Contact', 'Login'];
 // const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-export default function AdminNavBar({pages, setPage}) {
+export default function AdminNavBar() {
+  const pages = ["Dashboard", "Stats", "DB Manager"]
 
   const navigate = useNavigate(); 
 
@@ -92,7 +93,7 @@ export default function AdminNavBar({pages, setPage}) {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={() => {handleCloseNavMenu(); setPage(page)}}> 
+                <MenuItem key={page} onClick={() => {handleCloseNavMenu(); navigate(`/admin/${page.replaceAll(" ","").toLowerCase()}`)}}> 
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -121,7 +122,7 @@ export default function AdminNavBar({pages, setPage}) {
             {pages.map((page) => (
               <Button
                 onClick={()=>{
-                  setPage(page);
+                  navigate(`/admin/${page.replaceAll(" ","").toLowerCase()}`);
                   handleCloseNavMenu();
                 }}
                 key={page}

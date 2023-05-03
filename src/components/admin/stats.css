@@ -1,0 +1,31 @@
+
+.charts-container {
+    /* margin:20px auto; */
+    height:100%;
+}
+
+.chart-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    height: 100%;
+    margin:auto;
+    padding:48px 0px;
+    padding-top: 10px;
+    /* margin-bottom: 30px; */
+}
+
+.chart-header {
+    font-family: sans-serif !important;
+    font-weight: normal;
+    font-size: 1rem;
+    margin-right: 5px;
+    margin-bottom: 18px;
+}
+
+canvas {
+    cursor: crosshair;
+    /* width: 90% !important; */
+}

@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import Dashboard from './Dashboard';
-import DatabaseManager from './DatabaseManager';
-import { isAdminAuth } from '../../utils/auth';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Login from '../Login';
+import { isAdminAuth } from '../../utils/auth';
+import Dashboard from './AdminStats';
+import DatabaseManager from './DatabaseManager';
 
 export default function Admin() {
 	const navigate = useNavigate();
@@ -13,13 +12,6 @@ export default function Admin() {
 		if (!isAdminAuth()){
 			navigate("/login");
 		}
+		navigate("/admin/dashboard");
 	},[]);
-
-  	if (page==="Dashboard") {
-		return <Dashboard setPage={setPage}/>
-	}
-	if (page==="DB Manager") {
-		return <DatabaseManager setPage={setPage}/>
-	}
-
 }

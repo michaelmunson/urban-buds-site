@@ -101,6 +101,8 @@ export default function Checkout({cart, setCart}) {
 				order:cart,
 				storeDetails,
 				timestamp : Date.now(),
+				total,
+				fulfilled:false,
 			}),
 			headers: {
 			  'Content-type': 'application/json; charset=UTF-8',

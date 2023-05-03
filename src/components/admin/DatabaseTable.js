@@ -2,7 +2,7 @@ import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead
 import React, {useEffect, useState} from 'react';
 
 
-export default function DatabaseTable({table,data,checkedRows,setCheckedRows,columns}) {
+export default function DatabaseTable({table,data,checkedRows,setCheckedRows,columns,handlePreUpdate}) {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
   
@@ -49,7 +49,13 @@ export default function DatabaseTable({table,data,checkedRows,setCheckedRows,col
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row,i) => {
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={`key${i}`}>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={`key${i}`} 
+                      onClick={e => {
+                        if (e.detail === 2){
+                          handlePreUpdate(row);
+                        }
+                      }}
+                    >
                       <TableCell>
                         <Checkbox onChange={handleCheckRow}/>
                       </TableCell>

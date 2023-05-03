@@ -152,12 +152,23 @@ export const Order = {
 
         const orderId = orderPrefix + orderNum;
 
-        const result = await Database.collection('orders').doc(orderId).set({...orderReq});
+        const result = await Database.collection('orders').doc(orderId).set({...orderReq,orderId});
         return {
             ...result,
             error:false,
             orderId,
         }
+    },
+
+    async changeStatus(statusReq){
+        const ret = [];
+        const {orderIds,status} = statusReq;
+        for (const id of orderIds){
+            ret.push(
+                await Database.collection("orders").doc(id).update({fulfilled:status})
+            );
+        }
+        return ret;
     }
 }
 
